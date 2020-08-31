@@ -1,23 +1,3 @@
-#from hashlib import md5
-#from socket import socket, AF_INET, SOCK_STREAM, SHUT_WR
-#from os import urandom
-#server_ip = "192.168.43.109"
-#server_port = 9000
-
-
-def recieve2(connection, data_size):
-
-        fragments = []
-
-        while True:
-                chunk = connection.recv(data_size)
-
-                if not chunk: break
-                fragments.append(chunk)
-
-        return b''.join(fragments)
-
-
 def recieve(connection, data_size):
 
         data = bytearray(data_size)
@@ -25,6 +5,8 @@ def recieve(connection, data_size):
         pos = 0
         total_recieved = 0
         buffer_size = 4096
+
+
 
         while pos < data_size:
                 chunk = connection.recv(buffer_size)
@@ -61,10 +43,9 @@ def send(data, number_of_bytes):
 	return response
 
 
+"""
 #data = urandom(1024**2 *16)
 #send(data)
-
-"""
 
 		i = 0
 		while True:
@@ -81,4 +62,26 @@ def send(data, number_of_bytes):
 						return
 					elif n == '' or n == 2 or n.lower() == 'retry':
 						i = 0
+
+#from hashlib import md5
+#from socket import socket, AF_INET, SOCK_STREAM, SHUT_WR
+#from os import urandom
+#server_ip = "192.168.43.109"
+#server_port = 9000
+
+
+def recieve2(connection, data_size):
+
+        fragments = []
+
+        while True:
+                chunk = connection.recv(data_size)
+
+                if not chunk: break
+                fragments.append(chunk)
+
+        return b''.join(fragments)
+
+
+
 """

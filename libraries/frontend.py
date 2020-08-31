@@ -36,7 +36,7 @@ def signup():
 
 		# 6.
 		rolling_public_key_name = random_name_generator()
-		if generate_asymmetric_keys(rolling_public_key_name) == 1:
+		if generate_encryption_keys(rolling_public_key_name) == 1:
 			print("Asymmetric key generation failed.")
 			return
 		else:
@@ -55,12 +55,12 @@ def signup():
 		print(rolling_public_key)
 		"""
 
-		# 7.
-		hash_ = _hash(plaintext)
+		payload = symmetrically_encrypt(plaintext, encryption_key(server)) + _hash(plaintext)
 
+		payload_size = (len(payload)).to_bytes(payload_size_size, byteorder='little')
 		# print(hash_)
 
-		request = asymmetric_byte + asymmetrically_encrypt(plaintext, encryption_key(server)) + hash_
+		request = asymmetric_byte + version + payload_size + payload
 
 		# assert len(request) < username_availability_check_request_size
 
@@ -68,7 +68,7 @@ def signup():
 		print("Sending ", len(request), "bytes of data to the server. Hash: ", md5(request).hexdigest())
 
 		try:
-			response = memoryview(send(request, username_availability_check_response_size))
+			response = memoryview(send(request, username_availability_request_response_size))
 		except TypeError:
 			if response == 1:
 				print("Network Problem...")
@@ -146,16 +146,14 @@ def signup():
 
 
 	# catch and deal with errors in a manner a bit more robust :/
-	if generate_asymmetric_keys(encryption_key(username)) == 1:
+	if generate_encryption_keys(encryption_key(username)) == 1:
 		print("Asymmetric key generation failed!")
 		return
-
-	print("SKIPPING THE GENERATION OF THE SIGNING KEYS FOR NOW!!!")
+	print("GENERATING ANOTHER ENC KEY IN PLACE OF THE SIGNING KEYS FOR NOW!!!")
 	print("Using asy enc key as sig key...")
-
-#	if generate_signature_keys(signature_key(username)) == 1:
-#		print("Signature key generation failed.")
-#		return
+	if generate_encryption_keys(signature_key(username)) == 1: # it'll be signature_key
+		print("Signature key generation failed.")
+		return
 
 
 	# creating the signup request
@@ -180,7 +178,8 @@ def signup():
 	encryption_public_key_size = (len(public_key_1)).to_bytes(max_encryption_public_key_size, byteorder='little')
 
 	# 9.
-	public_key_2 = execute("./libraries/ccr -p -F " + encryption_key(username+'_'))[0] #execute("./libraries/ccr -p -F " + signature_key(username))[0]
+	public_key_2 = execute("./libraries/ccr -p -F " + signature_key(username))[0]
+	#print(public_key_2)
 
 	# 8.
 	signature_public_key_size = (len(public_key_2)).to_bytes(max_signature_public_key_size, byteorder='little')
@@ -205,11 +204,11 @@ def signup():
 
 	#assert len(request) < signup_request_size
 
-	print("Signup Request:\n", request)
+	#print("Signup Request:\n", request)
 	print("Length of request: ", len(request))
 
 	try:
-		response = memoryview(send(request, username_availability_check_response_size))
+		response = memoryview(send(request, username_availability_request_response_size))
 	except TypeError:
 		if response == 1:
 			print("Network Problem...")
@@ -266,13 +265,13 @@ def login():
 
 	first check whether the user exists on this computer or not.
 	if it does, decrypt, connect to the server to authenticate & synchronise
-	else, check whether the user exists on the server and 
+	else, check whether the user exists on the server and
 	authenticate and sync him
 
 
 	As a later feature, the
 	user will get to choose whether he wants to send his
-	(symmetric and asymmetric) keys encrypted with his 
+	(symmetric and asymmetric) keys encrypted with his
 	symmetric password over to our server.
 	The default option provides the user more freedom over his keys
 	at the cost of portability. (he will still be allowed to manually

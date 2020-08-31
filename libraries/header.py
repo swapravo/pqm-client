@@ -39,7 +39,11 @@ ccr_folder = ".ccr/"
 
 user_home = str(Path.home())+'/'
 
-version = "0.1"
+version = b'\x00\x00'
+
+payload_size = 0
+
+payload_size_size = 4
 
 random_name_length = 16 # characters in hex
 
@@ -80,7 +84,7 @@ cc_address_list_size = 1
 
 username_availability_check_request_size = 1024 ** 1 * 13 # THIS NEEDS TO BE TRIMMED # 1 + nonce_size + max_username_size + request_size + rolling_public_key_size + hash_size
 
-username_availability_check_response_size = 1024 ** 1 * 16 # THIS NEEDS TO BE TRIMMED
+username_availability_request_response_size = 1024 ** 1 * 16 # THIS NEEDS TO BE TRIMMED
 
 max_signup_request_size = 1024 ** 1 * 20 #1 + nonce_size + max_username_size + request_code_size + max_encryption_public_key_size + max_signature_public_key_size
 
