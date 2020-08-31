@@ -54,7 +54,7 @@ def unmount_ccr_ramdisk():
 	rm("-rfv", user_home+ccr_folder)
 
 
-def generate_asymmetric_keys(keyname):
+def generate_encryption_keys(keyname):
 	print("Generating asymmetric encryption keys.")
 	print("THESE FILES NEED TO BE (f)LOCKED!!!")
 	out, err = execute("./libraries/ccr --gen-key ENC-256 --name " + keyname)
@@ -203,7 +203,7 @@ def password_strength_checker(password):
 	# alteast 128 bits of entropy required => 20 characters atleast
 	# log2(26 + 26 + 10 + 33)
 
-	if len(password) < 20: 
+	if len(password) < 20:
 		print("Not enough Entropy. Password needs to be longer.")
 		return 1
 	if search("[a-z]", password) == None:
