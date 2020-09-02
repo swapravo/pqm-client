@@ -1,27 +1,34 @@
-def recieve(connection, data_size):
+def recieve(connection, max_payload_size):
 
-        data = bytearray(data_size)
+	pos = 0
+	total_recieved = 0
+	buffer = 4096
 
-        pos = 0
-        total_recieved = 0
-        buffer_size = 4096
+	# set connection timeouts here
 
+	payload_size = int.from_bytes(connection.recv(4), byteorder='little')
+	if payload_size > max_payload_size:
+		print("Buffer size exceeded. Closing connection...")
+		connection.shutdown(RDWR)
+		connection.close()
+		return b''
 
+	data = bytearray(payload_size)
 
-        while pos < data_size:
-                chunk = connection.recv(buffer_size)
-                chunk_size = len(chunk)
-                total_recieved += chunk_size
+	while pos < payload_size:
+		chunk = connection.recv(buffer)
+		chunk_size = len(chunk)
+		total_recieved += chunk_size
 
-                if not chunk: break
+		if not chunk: break
 
-                data[pos:pos+chunk_size] = chunk
-                pos += chunk_size
+		data[pos:pos+chunk_size] = chunk
+		pos += chunk_size
 
-        if pos == data_size:
-                return data
+	if pos == payload_size:
+		return data
 
-        return data[:total_recieved]
+	return data[:total_recieved]
 
 
 def send(data, number_of_bytes):
@@ -81,6 +88,29 @@ def recieve2(connection, data_size):
                 fragments.append(chunk)
 
         return b''.join(fragments)
+
+def recieve(connection, data_size):
+
+        data = bytearray(data_size)
+
+        pos = 0
+        total_recieved = 0
+        buffer_size = 4096
+
+        while pos < data_size:
+                chunk = connection.recv(buffer_size)
+                chunk_size = len(chunk)
+                total_recieved += chunk_size
+
+                if not chunk: break
+
+                data[pos:pos+chunk_size] = chunk
+                pos += chunk_size
+
+        if pos == data_size:
+                return data
+
+        return data[:total_recieved]
 
 
 
