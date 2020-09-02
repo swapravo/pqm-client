@@ -130,6 +130,27 @@ def asymmetrically_decrypt(message, private_key_name):
 	return returned_data[0]
 
 
+def sign(message, recipient_name):
+	process = Popen(["./ccr -s -r " + recipient_name], shell=True, stdout=PIPE, stdin=PIPE)
+	returned_data = process.communicate(input=message)
+	process.terminate()
+
+	if returned_data[0] == b'':
+		return 1
+	return returned_data[0]
+
+
+def verify_signature(signature):
+	# the key must be in the ccr folder!
+	process = Popen(["./ccr -v "], shell=True, stdout=PIPE, stdin=PIPE)
+	returned_data = process.communicate(input=signature)
+	process.terminate()
+
+	if not returned_data[0] == b'':
+		return 1
+	return returned_data[0]
+
+
 def lock_user_keys(username, password):
 
 	if type(password) != bytes:
