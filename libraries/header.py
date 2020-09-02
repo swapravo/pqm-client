@@ -17,11 +17,11 @@ from time import sleep
 
 # global variables
 
-asymmetric_byte = b'\xaa' #10101010
+signature_denoter = b'\xaa' #10101010
 
-symmetric_byte = b'U'     #01010101
+hash_denoter = b'U'     #01010101
 
-header_byte_size = 1
+authentication_tag_size = 1
 
 loggged_in = False
 
@@ -151,6 +151,10 @@ username_availability_check_code = code(25)
 no_changes_in_mailbox = code(26)
 
 invalid_username_code = code(27)
+
+signup_successful_code = code(28)
+
+signup_failed_code = code(29)
 
 
 print("\nLoading modules...\n")
