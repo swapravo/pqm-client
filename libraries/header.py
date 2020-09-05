@@ -8,11 +8,11 @@ from pathlib import Path
 from subprocess import Popen, PIPE
 from sh import mkdir, mount, shred, umount, rm, touch
 from sh.contrib import sudo
-from time import time
+from msgpack import packb as pack, unpackb as unpack
+from time import time, sleep
 from string import printable
 from re import search
 from getpass import getpass
-from time import sleep
 
 
 # global variables
@@ -20,8 +20,6 @@ from time import sleep
 signature_denoter = b'\xaa' #10101010
 
 hash_denoter = b'U'     #01010101
-
-authentication_tag_size = 1
 
 loggged_in = False
 
@@ -40,10 +38,6 @@ ccr_folder = ".ccr/"
 user_home = str(Path.home())+'/'
 
 version = b'\x00\x00'
-
-payload_size = 0
-
-payload_size_size = 4
 
 random_name_length = 16 # characters in hex
 
@@ -68,34 +62,15 @@ rolling_id_size = 8
 
 rolling_authentication_token_size = 32
 
-max_encryption_public_key_size = 2 # upto 4209 + max_username_size + int(log10(number_of_characters_in_username))) + 1
+max_address_list_size = 100
 
-max_signature_public_key_size = 2
-
-rolling_public_key_size = max_encryption_public_key_size + random_name_length
-
-key_fingerprint_size = 64
-
-max_address_list_size = 2
-
-bcc_address_list_size = 1
-
-cc_address_list_size = 1
-
-username_availability_check_request_size = 1024 ** 1 * 13 # THIS NEEDS TO BE TRIMMED # 1 + nonce_size + max_username_size + request_size + rolling_public_key_size + hash_size
-
-username_availability_request_response_size = 1024 ** 1 * 16 # THIS NEEDS TO BE TRIMMED
-
-max_signup_request_size = 1024 ** 1 * 20 #1 + nonce_size + max_username_size + request_code_size + max_encryption_public_key_size + max_signature_public_key_size
+username_availability_check_response_size = 1024 ** 1 * 16 # THIS NEEDS TO BE TRIMMED
 
 max_signup_response_size = 1024 ** 1 * 16 # THIS NEEDS TO BE TRIMMED
 
 
 def code(n):
 	return (n).to_bytes(2, byteorder='little')
-
-
-print("THESE CODES ARE TEMPORARY!!!")
 
 
 not_found_code = code(1)

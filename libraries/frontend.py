@@ -1,6 +1,4 @@
 def signup():
-
-
 	# download new server signing keys
 
 	print("\nSignup:")
@@ -14,61 +12,31 @@ def signup():
 		if username_vailidity_checker(username) == 1:
 			continue
 
-		# checking the availablity of this username
-		# creating the request
+		plaintext = {"timestamp": timestamp(), "nonce": urandom(nonce_size), \
+			"request_code": username_availability_check_code, "username": \
+			bytes(max_username_size - len(username)) + bytes(username, 'utf-8')}
 
-		# size of the request: ???
-
-		# 1.
-		# asymmetric_byte
-
-		# 2.
-		timestamp_ = timestamp()
-
-		# 3.
-		nonce = urandom(nonce_size)
-
-		# 4.
-		request_code = username_availability_check_code
-
-		# 5.
-		username_ = bytes(max_username_size - len(username)) + bytes(username, 'utf-8')
-
-		# 6.
 		rolling_public_key_name = random_name_generator()
 		if generate_encryption_keys(rolling_public_key_name) == 1:
 			print("Asymmetric key generation failed.")
 			return
-		else:
-			print("Temporary Key created: ", rolling_public_key_name)
 
-		# make sure this key is written to ~/.ccr/
-		rolling_public_key = execute("./libraries/ccr -p -F " + rolling_public_key_name)[0]
+		# make sure this key is written to ~/.ccr/ which should be a ramdisk
+		plaintext["rolling_public_key"] = execute("./libraries/ccr -p -F " + rolling_public_key_name)[0]
 
-		plaintext = timestamp_ + nonce + request_code + username_ + rolling_public_key
+		payload = asymmetrically_encrypt(pack(plaintext, use_bin_type=True), encryption_key(server))
+		payload = hash_denoter + _hash(payload) + payload
 
-		"""
-		print(timestamp_)
-		print(nonce)
-		print(request)
-		print(username_)
-		print(rolling_public_key)
-		"""
+		#with 4 bytes you can represent upto 32 GiB
+		payload_size = (len(payload)).to_bytes(4, byteorder='little')
 
-		payload = symmetrically_encrypt(plaintext, encryption_key(server)) + _hash(plaintext)
-
-		payload_size = (len(payload)).to_bytes(payload_size_size, byteorder='little')
-		# print(hash_)
-
-		request = asymmetric_byte + version + payload_size + payload
-
-		# assert len(request) < username_availability_check_request_size
+		request = version + payload_size + payload
 
 		from hashlib import md5
 		print("Sending ", len(request), "bytes of data to the server. Hash: ", md5(request).hexdigest())
 
 		try:
-			response = memoryview(send(request, username_availability_request_response_size))
+			response = memoryview(send(request, username_availability_check_response_size))
 		except TypeError:
 			if response == 1:
 				print("Network Problem...")
@@ -80,15 +48,8 @@ def signup():
 		if response == b'':
 			print("Server closed the connection.")
 
-		# parsing the response
-		# what do i do when these errors occur???
-
-		recieved_asymmetric_byte = response[:header_byte_size]
-
-		if recieved_asymmetric_byte != asymmetric_byte:
-			print("Garbage recieved from server!\n")
-			print("Garbage: ", response)
-			return
+		from sys import exit
+		exit()
 
 		# noting the hash
 		recieved_hash = response[-hash_size:]
