@@ -1,53 +1,51 @@
+def connect():
+	connection = socket(AF_INET, SOCK_STREAM)
+	connection.setblocking(True)
+	try:
+		connection.connect((server_ip, server_port))
+		return connection
+	except:
+		print("Network error...")
+		return 1
+
+
 def recieve(connection, max_payload_size):
 
-	pos = 0
-	total_recieved = 0
-	buffer = 4096
-
-	# set connection timeouts here
+	if max_payload_size == 0:
+		return b''
 
 	payload_size = int.from_bytes(connection.recv(4), byteorder='little')
 	if payload_size > max_payload_size:
-		print("Buffer size exceeded. Closing connection...")
-		connection.shutdown(RDWR)
-		connection.close()
+		close(connection)
 		return b''
 
 	data = bytearray(payload_size)
+	pos = 0
+	print("payload_size", payload_size)
+	total_recieved = 0
+	buffer_size = 4096
 
 	while pos < payload_size:
-		chunk = connection.recv(buffer)
+		# insert try catch here in case it looses connectivity
+		# insert a timeout here
+		chunk = connection.recv(buffer_size)
 		chunk_size = len(chunk)
 		total_recieved += chunk_size
-
-		if not chunk: break
 
 		data[pos:pos+chunk_size] = chunk
 		pos += chunk_size
 
-	if pos == payload_size:
-		return data
-
-	return data[:total_recieved]
+		if total_recieved == payload_size:
+			return data
 
 
-def send(data, number_of_bytes):
-
-	network = socket(AF_INET, SOCK_STREAM)
-	network.connect((server_ip, server_port))
-
+def send(connection, data):
 	try:
-		network.send(data)
-		network.shutdown(SHUT_WR)	# signal to the server that it has no more data to send
-		print("SET A TIMEOUT HERE!")
-		response = recieve(network, number_of_bytes)
-		network.close()
-
-	except Exception as err:
-		print("Network error: ", err)
+		connection.send(data)
+	except:
+		print("Network ERROR!")
 		return 1
-
-	return response
+		# press xxx to retry
 
 
 """
