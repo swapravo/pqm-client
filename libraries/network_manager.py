@@ -1,6 +1,5 @@
 def connect():
 	connection = socket(AF_INET, SOCK_STREAM)
-	connection.setblocking(True)
 	try:
 		connection.connect((server_ip, server_port))
 		return connection
@@ -46,6 +45,13 @@ def send(connection, data):
 		print("Network ERROR!")
 		return 1
 		# press xxx to retry
+
+
+connection = connect()
+
+if connection == 1:
+	input("Network Error!")
+
 
 
 """
