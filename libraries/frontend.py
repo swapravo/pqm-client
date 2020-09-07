@@ -13,8 +13,7 @@ def signup():
 			continue
 
 		plaintext = {"timestamp": timestamp(), "nonce": urandom(nonce_size), \
-			"request_code": username_availability_check_code, "username": \
-			bytes(max_username_size - len(username)) + bytes(username, 'utf-8')}
+			"request_code": username_availability_check_code, "username": bytes(username, 'utf-8')}
 
 		rolling_public_key_name = random_name_generator()
 		if generate_encryption_keys(rolling_public_key_name) == 1:
@@ -31,12 +30,16 @@ def signup():
 		payload_size = (len(payload)).to_bytes(4, byteorder='little')
 
 		request = version + payload_size + payload
+		#del payload
 
-		from hashlib import md5
-		print("Sending ", len(request), "bytes of data to the server. Hash: ", md5(request).hexdigest())
+		#from hashlib import md5
+		#print("Sending ", len(request), "bytes of data to the server. Hash: ", md5(payload).hexdigest())
+
+		if connection.send(request) == 1:
+			input("Network Error!")
 
 		try:
-			response = memoryview(send(request, username_availability_check_response_size))
+			response = memoryview(recieve(connection, username_availability_check_response_size))
 		except TypeError:
 			if response == 1:
 				print("Network Problem...")
@@ -48,25 +51,23 @@ def signup():
 		if response == b'':
 			print("Server closed the connection.")
 
-		from sys import exit
-		exit()
+		recieved_hash = response[:hash_size]
 
-		# noting the hash
-		recieved_hash = response[-hash_size:]
+		if recieved_hash != _hash(response[hash_size:]):
+			print("Hash verification FAILED!. Please retry!")
+			continue
+		else:
+			response = response[hash_size:]
 
 		# check for decryption errors
-		response = asymmetrically_decrypt(response[header_byte_size:-hash_size], rolling_public_key_name)
-		if response == 1:
-			print("decryption FAILED!")
+		plaintext = asymmetrically_decrypt(response, rolling_public_key_name)
+		if plaintext == 1:
+			print("Decryption FAILED!. Please Retry!")
 			continue
 
-		# assuming the decryption was succesful
-		response = memoryview(response)
+		plaintext = memoryview(plaintext)
 
-		if _hash(response) != recieved_hash:
-			print("Message authentication failed!")
-			continue
-
+		# implement messagepack stuff here!
 		recieved_request_code = response[:request_code_size]
 		if recieved_request_code != request_code:
 			print("Request code mismatch!\n", request_code, recieved_request_code.tobytes())
