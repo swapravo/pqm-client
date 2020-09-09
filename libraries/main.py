@@ -18,6 +18,6 @@ while True:
 		signup()
 
 	else:
-		print("Exiting...")
+		print("\nExiting...\n")
+		close(connection)
 		exit()
-
