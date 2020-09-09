@@ -12,7 +12,8 @@ def signup():
 		if username_vailidity_checker(username) == 1:
 			continue
 
-		plaintext = {"timestamp": timestamp(), "nonce": urandom(nonce_size), \
+		nonce = urandom(nonce_size)
+		plaintext = {"timestamp": timestamp(), "nonce": nonce, \
 			"request_code": username_availability_check_code, "username": bytes(username, 'utf-8')}
 
 		rolling_public_key_name = random_name_generator()
@@ -25,20 +26,14 @@ def signup():
 
 		payload = asymmetrically_encrypt(pack(plaintext, use_bin_type=True), encryption_key(server))
 		payload = hash_denoter + _hash(payload) + payload
-
 		#with 4 bytes you can represent upto 32 GiB
 		payload_size = (len(payload)).to_bytes(4, byteorder='little')
 
 		request = version + payload_size + payload
-		#del payload
-
-		#from hashlib import md5
-		#print("Sending ", len(request), "bytes of data to the server. Hash: ", md5(payload).hexdigest())
-
-		if connection.send(request) == 1:
-			input("Network Error!")
+		del payload
 
 		try:
+			connection.send(request)
 			response = memoryview(recieve(connection, username_availability_check_response_size))
 		except TypeError:
 			if response == 1:
@@ -65,29 +60,20 @@ def signup():
 			print("Decryption FAILED!. Please Retry!")
 			continue
 
-		plaintext = memoryview(plaintext)
+		plaintext = unpack(plaintext, raw=False)
 
-		# implement messagepack stuff here!
-		recieved_request_code = response[:request_code_size]
-		if recieved_request_code != request_code:
-			print("Request code mismatch!\n", request_code, recieved_request_code.tobytes())
-			continue
-
-		recieved_nonce = response[request_code_size:request_code_size+nonce_size]
-		if recieved_nonce != nonce:
+		if plaintext["nonce"] != nonce:
 			print("Recieved nonce does not match nonce sent!")
 			continue
 
-		recieved_response_code = response[request_code_size+nonce_size:request_code_size+nonce_size+response_code_size]
-
-		if recieved_response_code == username_not_found_code:
+		if plaintext["response_code"] == username_not_found_code:
 			n = input("Username available! Signup with this username? [Yes] or no: ")
-			if n.lower != 'no' or n.lower() != 'n':
-				break
-		elif recieved_response_code == username_found_code:
+			if n.lower == 'no' or n.lower() == 'n':
+				continue
+		elif plaintext["response_code"] == username_found_code:
 			print("Username taken! Choose another username: ")
 			continue
-		elif recieved_response_code == username_invalid_code:
+		elif plaintext["response_code"] == username_invalid_code:
 			print("Invalid username! Please try again after sometime...")
 			# introduce a user blocker that prevents user from making more requests?
 			continue
@@ -96,129 +82,89 @@ def signup():
 			continue
 
 
-	while True:
-		password = getpass()
-		if password == "quit":
-			# remove that enc key!
-			# inform the server to drop the request
+		while True:
+			password = getpass()
+			if password == "quit":
+				# remove the enc keys!
+				# inform the server to drop the request
+				return
+			response = password_strength_checker(password)
+			if response == 0:
+				break
+
+
+		# catch and deal with errors in a manner a bit more robust :/
+		if generate_encryption_keys(encryption_key(username)) == 1:
+			print("Asymmetric key generation failed!")
 			return
-		response = password_strength_checker(password)
-		if response == 0:
-			break
+
+		# sig keys have already been generated
+		#if generate_signature_keys(signature_key(username)) == 1:
+		#	print("Signature key generation failed.")
+		#	return
+
+		nonce = urandom(nonce_size)
+		plaintext = {"timestamp": timestamp(), "nonce": nonce, \
+			"request_code": signup_code, "username": username}
+		plaintext["encryption_public_key"] =  execute("./libraries/ccr -p -F " + encryption_key(username))[0]
+		plaintext["signature_public_key"] = execute("./libraries/ccr -p -F " + signature_key(username))[0]
+
+		payload = asymmetrically_encrypt(pack(plaintext, use_bin_type=True), encryption_key(server))
+		payload = hash_denoter + _hash(payload) + payload
+		payload_size = (len(payload)).to_bytes(4, byteorder='little')
+
+		request = version + payload_size + payload
+		del payload
 
 
-	# catch and deal with errors in a manner a bit more robust :/
-	if generate_encryption_keys(encryption_key(username)) == 1:
-		print("Asymmetric key generation failed!")
-		return
-	print("GENERATING ANOTHER ENC KEY IN PLACE OF THE SIGNING KEYS FOR NOW!!!")
-	print("Using asy enc key as sig key...")
-	if generate_encryption_keys(signature_key(username)) == 1: # it'll be signature_key
-		print("Signature key generation failed.")
-		return
+		try:
+			connection.send(request)
+			response = memoryview(recieve(connection, username_availability_check_response_size))
+		except TypeError:
+			if response == 1:
+				print("Network Problem...")
+			# if response == 2:
+				# print("Server timeout...")
 
+		print("Recieved ", response.nbytes, "bytes of data from the server.")
 
-	# creating the signup request
+		if response == b'':
+			print("Server closed the connection.")
+			return
 
-	# 1. asymmetric_byte
+		recieved_hash = response[:hash_size]
 
-	# 2.
-	timestamp_ = timestamp()
+		if recieved_hash != _hash(response[hash_size:]):
+			print("Hash verification FAILED!. Please retry!")
+			continue
+		else:
+			response = response[hash_size:]
 
-	# 3.
-	nonce = urandom(nonce_size)
+		# check for decryption errors
+		plaintext = asymmetrically_decrypt(response, rolling_public_key_name)
+		if plaintext == 1:
+			print("Decryption FAILED!. Please Retry!")
+			continue
 
-	# 4.
-	request_code = signup_code
+		plaintext = unpack(plaintext, raw=False)
 
-	# 5. username_ remains the same
+		if plaintext["nonce"] != nonce:
+			print("Recieved nonce does not match nonce sent. Please retry!")
+			continue
+		elif plaintext["response_code"] == signup_successful_code:
+			print("Signup Successful!\n\n")
+			# introduce a user blocker that prevents user from making more requests?
+			return
+		else:
+			print("Recieved invalid response from server. Please retry:")
+			print(plaintext)
+			continue
 
-	# 7.
-	public_key_1 = execute("./libraries/ccr -p -F " + encryption_key(username))[0]
-
-	# 6.
-	encryption_public_key_size = (len(public_key_1)).to_bytes(max_encryption_public_key_size, byteorder='little')
-
-	# 9.
-	public_key_2 = execute("./libraries/ccr -p -F " + signature_key(username))[0]
-	#print(public_key_2)
-
-	# 8.
-	signature_public_key_size = (len(public_key_2)).to_bytes(max_signature_public_key_size, byteorder='little')
-
-	"""
-	print(timestamp_)
-	print(nonce)
-	print(request_code)
-	print(username_)
-	print(encryption_public_key_size)
-	print(public_key_1)
-	print(signature_public_key_size)
-	print(public_key_2)
-	"""
-
-	plaintext = timestamp_ + nonce + request_code + username_ + encryption_public_key_size + public_key_1 + signature_public_key_size + public_key_2
-
-	# 10.
-	hash_ = _hash(plaintext)
-
-	request = asymmetric_byte + asymmetrically_encrypt(plaintext, encryption_key(server)) + hash_
-
-	#assert len(request) < signup_request_size
-
-	#print("Signup Request:\n", request)
-	print("Length of request: ", len(request))
-
-	try:
-		response = memoryview(send(request, username_availability_request_response_size))
-	except TypeError:
-		if response == 1:
-			print("Network Problem...")
-		# if response == 2:
-			# print("Server timeout...")
-
-	print("size of response: ", len(response))
-
-	recieved_asymmetric_byte = response[:header_byte_size]
-	if recieved_asymmetric_byte != asymmetric_byte:
-		print("Garbage recieved from server!\n")
-		return
-
-	# noting the hash
-	recieved_hash = response[-hash_size:]
-
-	# check for decryption errors
-	response = asymmetrically_decrypt(response[header_byte_size:-hash_size], encryption_key(username))
-
-	# assuming the decryption was succesful
-	response = memoryview(response)
-
-	if _hash(response) != recieved_hash:
-		print("Message authentication failed!")
-		return
-
-	recieved_request_code = response[header_byte_size:header_byte_size+request_code_size]
-	if recieved_request_code != request:
-		print("Request code mismatch!\n")
-		return
-
-	recieved_nonce = response[header_byte_size+request_code_size:header_byte_size+request_code_size+nonce_size]
-	if recieved_nonce != nonce:
-		print("Recieved nonce does not match nonce sent!")
-		return
-
-	recieved_response_code = response[header_byte_size+request_code_size+nonce_size:header_byte_size+request_code_size+nonce_size+response_code_size]
-	if response == signup_success_code:
-		lock_user_keys(username, password)
-		print("Signup succesful!")
-	elif response == signup_failed_code:
-		print("Signup failed!")
-
-	# tell them about our pricing
-	# The computation costs to create a signing key
-	# will probably prevent bots from spamming. Do something
-	# to prevent people from creating multiple accounts
-	# without paying up :/
+		# tell them about our pricing
+		# The computation costs to create a signing key
+		# will probably prevent bots from spamming. Do something
+		# to prevent people from creating multiple accounts
+		# without paying up :/
 
 """
 
