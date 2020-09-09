@@ -65,95 +65,78 @@ rolling_authentication_token_size = 32
 max_address_list_size = 100
 
 username_availability_check_response_size = 1024 ** 1 * 16 # THIS NEEDS TO BE TRIMMED
-
-max_signup_response_size = 1024 ** 1 * 16 # THIS NEEDS TO BE TRIMMED
+signup_response_size = 1024 ** 1 * 16
 
 
 def code(n):
 	return (n).to_bytes(2, byteorder='little')
 
 
-not_found_code = code(1)
+decryption_failure_code = code(1)
 
-forbidden_code = code(2)
+login_step_1_code = code(2)
 
-failure_code = code(3)
+login_step_2_code = code(3)
 
-decryption_failure_code = code(4)
+time_limit_exceeded_code = code(4)
 
-login_step_1_code = code(5)
+username_not_found_code = code(5)
 
-login_step_2_code = code(6)
+username_found_code = code(6)
 
-time_limit_exceeded_code = code(7)
+update_mailbox_code = code(7)
 
-username_not_found_code = code(8)
+delete_email_code = code(8)
 
-username_found_code = code(9)
+shred_mailbox_code = code(9)
 
-nonce_verification_failed_code = code(10)
+close_account_code = code(10)
 
-email_upcoming_code = code(11)
+logout_code = code(11)
 
-is_an_email_code = code(12)
+logout_successful_code = code(12)
 
-update_mailbox_code = code(13)
+logout_failed_code = code(13)
 
-delete_message_code = code(14)
+get_public_keys = code(14)
 
-shred_mailbox_code = code(15)
+signup_code = code(15)
 
-close_account_code = code(16)
+username_availability_check_code = code(16)
 
-close_account_successful_code = code(17)
+no_changes_in_mailbox = code(17)
 
-close_account_failed = code(18)
+invalid_username_code = code(18)
 
-logout_code = code(19)
+signup_successful_code = code(19)
 
-logout_successful_code = code(20)
+invalid_signup_credentials = code(20)
 
-logout_failed_code = code(21)
-
-download_public_keys = code(22)
-
-fetch_public_keys_code = code(23)
-
-signup_code = code(24)
-
-username_availability_check_code = code(25)
-
-no_changes_in_mailbox = code(26)
-
-invalid_username_code = code(27)
-
-signup_successful_code = code(28)
-
-signup_failed_code = code(29)
+okay_code = code(21)
 
 
 print("\nLoading modules...\n")
 
-with open("./libraries/backend.py") as module:
-	cmd = module.read()
+with open("./libraries/backend.py") as backend_module:
+	cmd = backend_module.read()
 exec(cmd)
 
 print("Backend loaded...")
 
-with open("./libraries/frontend.py") as module:
-	cmd = module.read()
+with open("./libraries/frontend.py") as frontend_module:
+	cmd = frontend_module.read()
 exec(cmd)
 
 print("Frontend loaded...")
 
-with open("./libraries/network_manager.py") as module:
-	cmd = module.read()
+with open("./libraries/network_manager.py") as network_manager_module:
+	cmd = network_manager_module.read()
 exec(cmd)
 
 print("Network manager loaded...")
 
-with open("./libraries/main.py") as module:
-	cmd = module.read()
+with open("./libraries/main.py") as main_module:
+	cmd = main_module.read()
 exec(cmd)
 
 del cmd
