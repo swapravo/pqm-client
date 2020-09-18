@@ -1,9 +1,13 @@
-from socket import socket, AF_INET, SOCK_STREAM, SHUT_WR
+from socket import socket, AF_INET, SOCK_STREAM, SHUT_RDWR
 from os import urandom, listdir
 from os.path import isfile
 from sys import byteorder, exit
-from hashlib import sha512, blake2b
-from whirlpool import new as whirlpool
+from sqlite3 import connect as db_connector
+from hashlib import blake2b
+from nacl.pwhash.argon2id import kdf
+from nacl.secret import SecretBox as xsalsa20poly1305
+from nacl.utils import random as nonce_generator
+from hmac import compare_digest # IMPLEMENT THIS !!!
 from pathlib import Path
 from subprocess import Popen, PIPE
 from sh import mkdir, mount, shred, umount, rm, touch
@@ -11,7 +15,7 @@ from sh.contrib import sudo
 from msgpack import packb as pack, unpackb as unpack
 from time import time, sleep
 from string import printable
-from re import search
+from re import search as contains
 from getpass import getpass
 
 
@@ -122,6 +126,18 @@ with open("./libraries/backend.py") as backend_module:
 exec(cmd)
 
 print("Backend loaded...")
+
+if isfile("./libraries/db"):
+	print("Database loaded...")
+else:
+	print("Database MISSING!\nExiting...")
+	exit()
+
+with open("./libraries/database_manager.py") as database_manager_module:
+	cmd = database_manager_module.read()
+exec(cmd)
+
+print("Database manager loaded...")
 
 with open("./libraries/frontend.py") as frontend_module:
 	cmd = frontend_module.read()
