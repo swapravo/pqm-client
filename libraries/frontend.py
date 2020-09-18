@@ -92,7 +92,7 @@ def signup():
 			if response == 0:
 				break
 
-
+		password = bytes(password, 'utf-8')
 		# catch and deal with errors in a manner a bit more robust :/
 		if generate_encryption_keys(encryption_key(username)) == 1:
 			print("Asymmetric key generation failed!")
@@ -152,8 +152,12 @@ def signup():
 			print("Recieved nonce does not match nonce sent. Please retry!")
 			continue
 		elif plaintext["response_code"] == signup_successful_code:
-			print("Signup Successful!\n\n")
+			# sync with DB now
+			add_user(username, password, \
+				execute("./libraries/ccr -y -P -F " + encryption_key(username))[0], \
+				execute("./libraries/ccr -y -P -F " + signature_key(username))[0])
 			# introduce a user blocker that prevents user from making more requests?
+			print("Signup Successful!\n\n")
 			return
 		else:
 			print("Recieved invalid response from server. Please retry:")
@@ -166,11 +170,10 @@ def signup():
 		# to prevent people from creating multiple accounts
 		# without paying up :/
 
-"""
 
 def login():
 
-
+	"""
 	first check whether the user exists on this computer or not.
 	if it does, decrypt, connect to the server to authenticate & synchronise
 	else, check whether the user exists on the server and
@@ -191,7 +194,7 @@ def login():
 
 	# Login should be a two step process. Firstly, the client-side login
 	# Secondly, server-side login.
-
+	"""
 
 	# client-side login
 
@@ -222,5 +225,3 @@ def login():
 	else:
 		print("Server-side Login Failed.")
 		return 1
-
-"""
