@@ -73,15 +73,6 @@ def generate_signature_keys(keyname):
 		return 1
 	return keyname
 
-"""
-def generate_symmetric_key(keyname):
-	print("Generating symmetric keys.")
-	print("THESE FILES NEED TO BE (f)LOCKED!!!")
-	out, err = execute("./libraries/ccr -g CHACHA20,XSYND,ARCFOUR,CUBE512,SHA512 -aS " + user_home + ccr_folder + keyname)
-	if err: return 1
-	return keyname
-"""
-
 
 def key_fingerprint(keyname):
 
@@ -93,9 +84,7 @@ def key_fingerprint(keyname):
 		return 1
 
 	out, err = execute("./libraries/ccr -" + mode + " --fingerprint -F " + keyname)
-
 	if err: return 1
-
 	return bytes.fromhex(''.join(str(out[-81:-2], 'utf-8').split(':')))
 
 
@@ -109,9 +98,9 @@ def asymmetrically_encrypt(message, public_key_name):
 	process.terminate()
 
 	#codecrypt returns a None if the encryption is successful
-	assert returned_data[1] == None
-
-	return returned_data[0]
+	if returned_data[1] == None:
+		return returned_data[0]
+	return 1
 
 
 def asymmetrically_decrypt(message, private_key_name):
@@ -129,6 +118,15 @@ def asymmetrically_decrypt(message, private_key_name):
 		return 1
 	return returned_data[0]
 
+
+def symmetrically_encrypt(message, key):
+	box = xsalsa20poly1305(key)
+	return box.encrypt(message, nonce_generator(xsalsa20poly1305.NONCE_SIZE))
+
+
+def symmetrically_decrypt(message, key):
+	box = xsalsa20poly1305(key)
+	return box.decrypt(message)
 
 def sign(message, recipient_name):
 	process = Popen(["./ccr -s -r " + recipient_name], shell=True, stdout=PIPE, stdin=PIPE)
@@ -184,6 +182,7 @@ def unlock_user_keys(username, password):
 
 	print("READ KEYS FROM A DATABASE OR ATLEAST FROM ./libraries/keys/")
 
+	"""
 	out, err = execute("7z e ./keys/{} -o{} -p{}".format(username+'.7z', user_home+ccr_folder,  blake_hash))
 	if err: return 1
 	out, err = execute("7z e {} -o{} -p{}".format(user_home+ccr_folder+username+'temp2.7z', user_home+ccr_folder,  whirlpool_hash))
@@ -194,7 +193,7 @@ def unlock_user_keys(username, password):
 	if err: return 1
 	shred('-vfz', user_home+ccr_folder+username+"temp1.7z")
 	rm('-fv', user_home+ccr_folder+username+"temp1.7z")
-
+	"""
 	return 0
 
 
@@ -227,16 +226,16 @@ def password_strength_checker(password):
 	if len(password) < 20:
 		print("Not enough Entropy. Password needs to be longer.")
 		return 1
-	if search("[a-z]", password) == None:
+	if contains("[a-z]", password) == None:
 		print("Small letters needed.")
 		return 1
-	if search("[A-Z]", password) == None:
+	if contains("[A-Z]", password) == None:
 		print("Capital letters needed.")
 		return 1
-	if search("[0-9]", password) == None:
+	if contains("[0-9]", password) == None:
 		print("Numbers needed.")
 		return 1
-	if search("[" + printable[62:-5] + "]", password) == None:
+	if contains("[" + printable[62:-5] + "]", password) == None:
 		print("Special characters needed.")
 		return 1
 	print("Your password's entropy: about", len(password) * 6.5, "bits.")
