@@ -1,0 +1,46 @@
+version 0.1
+
+Suite of Post Quantum Cryptographic Algorithms supported:
+
+Asymmetric Key: MCEQCMDPC256FO-CUBE512-CHACHA20
+Digital Signatures: FMTSEQ256C-CUBE512-CUBE256
+Symmetric key + Authenticated encryption: CHACHA20,XSYND,ARCFOUR,CUBE512,SHA512
+
+
+CONSTANTS:
+
+byteorder = little
+
+Size of the encrypted nonce sent by the server for authenticating users: 64 bytes
+Max length of an email ID: 128 characters
+
+# commands to server are shortened to 2 bytes
+
+	refer to 'commands' for the complete set of commands defined
+
+Server Request Size: 2 bytes ( => 65536 different requests)
+
+EXTENSIONS TO IDENTIFY A KEY:
+
+This naming convention shall be used throughout the program to uniquely identify a key.
+
+encryption public key: .qepk
+encryption secret key: .qesk
+signature public key: .qspk
+signature secret key: .qssk
+
+Symmetric keys don't have a naming convention as of now
+
+NAMING CONVENTIONS FOR A KEY: username.type
+
+
+Structure of an email:
+
+timestamp -> 24 bytes
+message_length -> 5 bytes => max email size = 8GiB
+
+
+#To be included:
+Message Numbers
+chmod going necessary files and directories to prevent access
+Function to check for and download updates
