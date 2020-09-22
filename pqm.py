@@ -1,1 +1,4 @@
-from libraries.header import *
+import src.main
+
+
+src.main.main()
