@@ -14,9 +14,13 @@ HASH_DENOTER = b'\xff'     #01010101
 
 LOGGGED_IN = False
 
-USERNAME = ''
+USERNAME = ""
 
-PASSWORD = ''
+PASSWORD = ""
+
+KEY = b''
+
+ROLLING_AUTHENTICATION_TOKEN = b''
 
 SERVER = "server"
 
