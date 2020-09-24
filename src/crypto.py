@@ -23,6 +23,34 @@ def hash(message):
 	return blake2b(message, digest_size=src.globals.HASH_SIZE).digest()
 
 
+def insert_public_key(key, keyname):
+	out, err = src.utils.execute("./src/ccr -y -i --name " + keyname, key)
+	if err or out:
+		return 1
+	return 0
+
+
+def insert_private_key(key, keyname):
+	out, err = src.utils.execute("./src/ccr -y -I --name " + keyname, key)
+	if err or out:
+		return 1
+	return 0
+
+
+def remove_public_key(keyname):
+	out, err = src.utils.execute("./src/ccr -y -x " + keyname)
+	if err or out:
+		return 1
+	return 0
+
+
+def remove_private_key(keyname):
+	out, err = src.utils.execute("./src/ccr -y -X " + keyname)
+	if err or out:
+		return 1
+	return 0
+
+
 def generate_encryption_keys(keyname):
 	print("Generating asymmetric encryption keys.")
 	print("THESE FILES NEED TO BE (f)LOCKED!!!")
@@ -61,7 +89,7 @@ def asymmetrically_encrypt(message, public_key_name):
 
 	out, err = src.utils.execute("./src/ccr -e -r " + public_key_name, message)
 
-	if err: return 1
+	if not out or err: return 1
 	return out
 
 
@@ -69,7 +97,7 @@ def asymmetrically_decrypt(message, private_key_name):
 
 	out, err = src.utils.execute("./src/ccr -d -r " + private_key_name, message)
 
-	if err: return 1
+	if not out or err: return 1
 	return out
 
 
@@ -105,11 +133,3 @@ def symmetrically_decrypt(message, key):
 		return box.decrypt(message)
 	except:
 		return 1
-
-
-def lock_user_keys(username, password):
-	return
-
-
-def unlock_user_keys(username, password):
-	return
