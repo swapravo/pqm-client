@@ -11,6 +11,10 @@ import src.globals
 import src.utils
 
 
+def nonce(size=src.globals.NONCE_SIZE):
+	return urandom(size)
+
+
 def encryption_key(username):
 	return username + ".qmek"
 
@@ -154,6 +158,24 @@ def verify_signature(signature):
 		print(out, err)
 		return 1
 	return 0
+
+
+def validate_asymmetric_response(message, nonce):
+	# check for decryption errors
+	plaintext = asymmetrically_decrypt(message, src.globals.SERVER)
+	if type(plaintext) is int:
+		return 1
+
+	plaintext = src.utils.unpack(plaintext)
+	if type(plaintext) is not dict:
+		print("Garbage recived from server!")
+		return 1
+
+	if plaintext["nonce"] != nonce:
+		print("Nonce Verification FAILED!")
+		return 1
+
+	return plaintext
 
 
 def symmetric_key_generator():
