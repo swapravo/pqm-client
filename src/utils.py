@@ -13,11 +13,7 @@ import src.globals
 
 
 def sizeof(message):
-	return (len(request)).to_bytes(4, byteorder='little')
-
-
-def nonce(size=src.globals.NONCE_SIZE):
-	return urandom(size)
+	return (len(message)).to_bytes(4, byteorder='little')
 
 
 def pack(message):
@@ -41,15 +37,6 @@ def timestamp():
 def message_id():
 	src.globals.MESSAGE_ID += 1
 	return src.globals.MESSAGE_ID
-
-
-def symmetric_request(message):
-
-	message["timestamp"] = timestamp()
-	message["message_id"] = message_id()
- 	message = src.crypto.symmetrically_encrypt(message, src.globals.KEY)
-
-	return sizeof(message) + message
 
 
 def execute(command, data=None):
@@ -115,38 +102,19 @@ def password_strength_checker(password):
 	# alteast 128 bits of entropy required => 20 characters atleast
 	# log2(26 + 26 + 10 + 33)
 	if len(password) < 20:
-		print("Not enough Entropy. Password needs to be longer.")
+		print("Not enough Entropy. Password needs to be longer!")
 		return 1
 	if contains("[a-z]", password) == None:
-		print("Small letters needed.")
+		print("Small letters needed!")
 		return 1
 	if contains("[A-Z]", password) == None:
-		print("Capital letters needed.")
+		print("Capital letters needed!")
 		return 1
 	if contains("[0-9]", password) == None:
-		print("Numbers needed.")
+		print("Numbers needed!")
 		return 1
 	if contains("[" + printable[62:-5] + "]", password) == None:
-		print("Special characters needed.")
+		print("Special characters needed!")
 		return 1
 	print("Your password's entropy: about", len(password) * 6.5, "bits.")
 	return 0
-
-
-def validate_asymmetric_response(message, nonce):
-	# check for decryption errors
-	plaintext = src.crypto.asymmetrically_decrypt(message, src.globals.SERVER)
-	if type(plaintext) is int:
-		print("Decryption FAILED!")
-		return 1
-
-	plaintext = src.utils.unpack(plaintext)
-	if type(plaintext) is not dict:
-		print("Garbage recived from server!")
-		return 1
-
-	if plaintext["nonce"] != nonce:
-		print("Nonce Verification FAILED!")
-		return 1
-
-	return plaintext
