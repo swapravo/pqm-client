@@ -21,7 +21,11 @@ def pack(message):
 
 
 def unpack(message):
-	return unpackb(message, raw=False)
+	try:
+		return unpackb(message, raw=False)
+	except:
+		print("Invalid message! Message unpacking FAILED!")
+		return 1
 
 
 def random_name_generator(length=src.globals.RANDOM_NAME_LENGTH):
