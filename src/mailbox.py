@@ -1,3 +1,5 @@
+from os.path import isfile
+
 import src.utils
 import src.crypto
 import src.globals
@@ -35,25 +37,45 @@ def process(message, response_size)
         print("message ID MISMATCH!")
         return 1
 
+    # do look into rehashing speeds
     del response["message_id"]
     return response
 
 
 def download_public_keys(*IDs):
 
-	IDs = list(IDs)
-	# validate IDs here
+    if not IDs:
+        return 0
 
-	response = process(
-        {"request_code": src.globals.GET_PUBLIC_KEYS, "mail_id": IDs}, src.globals.BIG_RESPONSE)
+    valid_IDs, invalid_IDs = [], []
+	for ID in IDs:
+        if username_vailidity_checker(ID):
+            invalid_IDs.append(ID)
+        else:
+            valid_IDs.append(ID)
 
-    # process the response and insert the public keys
+    if invalid_IDs:
+        print("The following IDs are invalid!")
+        [print(i) for i in invalid_IDs]
 
-    if type(response) is int:
-        print("FAILED to download public keys!")
-        return 1
+    if valid_IDs:
+        print("Downloading Public keys...")
+    else:
+        return (keys_found, keys_not_found)
 
-    return 0
+    	response = process(
+            {"request_code": src.globals.GET_PUBLIC_KEYS, "mail_id": valid_IDs}, src.globals.BIG_RESPONSE)
+
+        # process the response and insert the public keys
+        # validate these keys before inserting them into
+        # the keyring. Display a QR code-like graphical
+        # representation also.
+
+        if type(response) is int:
+            print("FAILED to download public keys!")
+            return 1
+
+        return (keys_found, keys_not_found)
 
 
 def refresh_mailbox():
@@ -83,10 +105,48 @@ def delete_mail(*uid):
         print("FAILED to delete mail!")
         return 1
 
-    return 0
+
+def send_mail(to, cc, bcc, subject, body, *attachments):
+
+    """
+    cc, bcc are lists of email addresses.
+    subject, body are simple utf-8 strings.
+    attachments must be file paths and NOT file objects.
+    """
+
+    flag = False
+    for file in attachments:
+        if not isfile(file):
+            print(file, " not found!")
+            flag = True
+    if flag:
+        return 1
+
+    old_keys, new_keys = [], []
+
+    if src.crypto.key_missing(to):
+        new_keys.append(to)
+    else:
+        old_keys.append(to)
+    for address in cc:
+        if src.crypto.key_missing(address):
+            new_keys.append(address)
+        else:
+            old_keys.append(address)
+    for address in bcc:
+        if src.crypto.key_missing(address):
+            new_keys.append(address)
+        else:
+            old_keys.append(address)
+
+    keys_found, keys_not_found = download_public_keys(new_keys)
+    old_keys.append(keys_found)
+
+    print("")
 
 
-def send_mail(mail):
+
+
 
 	return
 
