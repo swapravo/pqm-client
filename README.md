@@ -21,7 +21,7 @@
 
 * No trust policy: Just because you use our services does **not** mean you have to trust us.
 	* Cryptographically-signed mails.
-	* Our applications are open source for you to read and tinker.
+	* Our applications are open source for you to read and tinker with.
 
 * Most people use webmail clients to login / signup. In case a compromised / malicious mail service provider takes a copy of the credentials,
 	it might prove to be long, before someone actually discovers this. PQm plans to be accesssible through the browser or the terminal using its **open source client**.
