@@ -8,7 +8,7 @@
   * With quantum-safe encryption algorithms and signature schemes.
   * All we can ever see	is the sender's and reciepient's address.
 
-* Sick of advertisements? We are too! So, no advertisements for you!
+* Sick of advertisements? We are too. So, no advertisements for you!
 
 * No foreceful collection of personal information:
   * No phone numbers, *unless you want* to opt for 2FA.
@@ -19,8 +19,9 @@
 
 * Your keys are generated on your device and the secret keys **never** leave it.
 
-* It tries to **remove all points of trust** from the mail service provider itself (here, us).
-	Just because you use our services does **not** mean you have to trust us.
+* No trust policy: Just because you use our services does **not** mean you have to trust us.
+	* Cryptographically-signed mails.
+	* Our applications are open source for you to read and tinker.
 
 * Most people use webmail clients to login / signup. In case a compromised / malicious mail service provider takes a copy of the credentials,
 	it might prove to be long, before someone actually discovers this. PQm plans to be accesssible through the browser or the terminal using its **open source client**.
