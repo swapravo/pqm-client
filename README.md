@@ -1,6 +1,6 @@
 # Post Quantum Mail
 
-## Post Quantum Mail aims to revolutionise the way we mail.
+## [PostQuantumMail](https://www.postquantummail.com) aims to revolutionise the way we mail.
 
 Currently, it uses [CodeCrypt](https://github.com/exaexa/codecrypt) as its quatum safe cryptographic backend and we plan to port it to [LibOQS](https://github.com/open-quantum-safe/liboqs) when it comes of age.
 
