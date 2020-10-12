@@ -2,39 +2,37 @@
 
 ## [PostQuantumMail](https://www.postquantummail.com) aims to revolutionise the way we mail.
 
-Currently, it uses [CodeCrypt](https://github.com/exaexa/codecrypt) as its quatum safe cryptographic backend and we plan to port it to [LibOQS](https://github.com/open-quantum-safe/liboqs) when it comes of age.
-
 ### Core ideas and Features:
 
 * End-to-End encrypted mails (**including** subjects and attachments)
   * With quantum-safe encryption algorithms and signature schemes.
-  * All we (and anyone who eventually breaks into our systems) can ever see
-	is the sender's and reciepient's address.
+  * All we can ever see	is the sender's and reciepient's address.
 
-* No Advertisements.
+* Sick of advertisements? We are too! So, no advertisements for you!
 
-* Free for personal use with access to all features.
-	Upgrade only for "out-of-the-box" or corporate use cases.
+* No foreceful collection of personal information:
+  * No phone numbers, *unless you want* to opt for 2FA.
+  * No linking you to other addresses, disguised in the form of "recovery mail addresses", *unless you want it.*
 
-* Private keys are generated on your device and **never** leave it.
+* Free for personal use.
+  * Upgrade only for "out-of-the-box" or corporate use cases.
+
+* Your keys are generated on your device and the secret keys **never** leave it.
 
 * It tries to **remove all points of trust** from the mail service provider itself (here, us).
 	Just because you use our services does **not** mean you have to trust us.
 
-* Considering a situation, where a mail service provider has been compromised in such 
-	a way that the signup/login scripts send a copy of credentials to the attackers,
-	it might prove to be long, before someone actually discovers this. PQm plans to be
-	accesssible only thorough its open source client.
+* Most people use webmail clients to login / signup. In case a compromised / malicious mail service provider takes a copy of the credentials,
+	it might prove to be long, before someone actually discovers this. PQm plans to be accesssible through the browser or the terminal using its **open source client**.
 
 * **Both** GUI and CLI interfaces!
 
-* Your mails do not become 1.4x their original size, as is the case with others. So, you can store 1.4x more mails with the same storage capacity with us.
+* Store 1.4x more mails with the same storage capacity with us. Your mails do not become 1.4x their original size, as is the case with others.
 
+### Technicals
 
-TODO List
-1. bash-like interface for managing mailboxes. (As in cd /inbox. or rm flipkart*)
-2. GUI
-3. A log pane that list all the background activities.
-4. Folders in one's mailbox.
-5. Pagination of info.
-6. create a seperate user for this app. let it own all rights to its files.
+We advise you to, and would really appreciate it, if you check out the technicals.
+
+* Currently, we use [CodeCrypt](https://github.com/exaexa/codecrypt) as the quantum-safe cryptographic backend and we plan to port it to [LibOQS](https://github.com/open-quantum-safe/liboqs) when it comes of age.
+
+* [Whitepaper](https://wwww.postquantummail.com/technical/technical-whitepaper-latest.pdf)
