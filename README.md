@@ -1,31 +1,34 @@
 # Post Quantum Mail
 
-	### Post Quantum Mail aims to revolutionise the way we mail.
+## Post Quantum Mail aims to revolutionise the way we mail.
 
-	Currently, it uses CodeCrypt as its quatum safe cryptographic backend and we plan to port it to LIbOQS
-		when it comes of age.
+Currently, it uses [CodeCrypt](https://github.com/exaexa/codecrypt) as its quatum safe cryptographic backend and we plan to port it to [LibOQS](https://github.com/open-quantum-safe/liboqs) when it comes of age.
 
-	### Core ideas and Features:
+### Core ideas and Features:
 
-		* End-to-End encrypted mails ( *including* subjects and attachments)
-			With quantum-safe encryption algorithms and signature schemes.
-			All we (and anyone who breaks into our systems) can ever see
-				is the sender's and reciepient's address.
+* End-to-End encrypted mails (**including** subjects and attachments)
+  * With quantum-safe encryption algorithms and signature schemes.
+  * All we (and anyone who eventually breaks into our systems) can ever see
+	is the sender's and reciepient's address.
 
-		* Free for personal use with access to all features.
-				Upgrade for "out-of-the-box" use cases.
+* No Advertisements.
 
-		* Private keys are generated on your device and are never transferred over to us.
+* Free for personal use with access to all features.
+	Upgrade only for "out-of-the-box" or corporate use cases.
 
-		* It tries to remove all points of trust from the mail service provider itself (here, us).
-			Just because you use our services does not mean you have to trust us.
+* Private keys are generated on your device and **never** leave it.
 
-		* No analytics / No Data mining FOREVER
+* It tries to **remove all points of trust** from the mail service provider itself (here, us).
+	Just because you use our services does **not** mean you have to trust us.
 
-		* Considering a situation, where a mail service provider has been compromised in such 
-				a way that the signup/login scripts send	a copy of credentials to the attackers,
-				it might prove to be long, before someone actually discovers this. PQm plans to be
-				accesssible only thorough its open source	client.
+* Considering a situation, where a mail service provider has been compromised in such 
+	a way that the signup/login scripts send a copy of credentials to the attackers,
+	it might prove to be long, before someone actually discovers this. PQm plans to be
+	accesssible only thorough its open source client.
+
+* **Both** GUI and CLI interfaces!
+
+* Your mails do not become 1.4x their original size, as is the case with others. So, you can store 1.4x more mails with the same storage capacity with us.
 
 
 TODO List
