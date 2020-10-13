@@ -19,16 +19,17 @@
 
 * Your keys are generated on your device and the secret keys **never** leave it.
 
-* No trust policy: Just because you use our services does **not** mean you have to trust us.
+* Verifiable trust policy: Just because you use our services does **not** mean you have to trust us.
 	* Cryptographically-signed mails.
-	* Our applications are open source for you to read and tinker with.
+	* Open source applications for you to tinker with.
 
 * Most people use webmail clients to login / signup. In case a compromised / malicious mail service provider takes a copy of the credentials,
 	it might prove to be long, before someone actually discovers this. PQm plans to be accesssible through the browser or the terminal using its **open source client**.
 
 * **Both** GUI and CLI interfaces!
 
-* Store 1.4x more mails with the same storage capacity with us. Your mails do not become 1.4x their original size, as is the case with others.
+* Store 1.4x more mails with the same storage capacity with us.[*](http://www.postquantummail.com/faq/#1.4). 
+Your mails do not become 1.4x their original size, as is the case with others.
 
 ### Technicals
 
