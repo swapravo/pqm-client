@@ -1,5 +1,4 @@
 from os.path import isfile
-from sys import exit
 from hmac import compare_digest # IMPLEMENT THIS !!!
 from pathlib import Path
 
@@ -64,6 +63,11 @@ MAX_ADDRESS_LIST_SIZE = 100
 SMALL_RESPONSE = 1024 ** 1 * 16 # ONE SIZE FITS ALL?
 BIG_RESPONSE = 1024 ** 2 * 4
 
+# MAXIMUM SIZE OF A MAIL: 4MBs
+MAX_MAIL_SIZE = 1024 ** 2 * 4
+
+MAX_RECIPIENTS = 100
+
 
 # REQUEST/RESPONSE CODES
 
@@ -108,3 +112,5 @@ SIGNUP_SUCCESSFUL = code(19)
 INVALID_SIGNUP_CREDENTIALS = code(20)
 
 OKAY = code(21)
+
+SEND_MAIL = code(22)
