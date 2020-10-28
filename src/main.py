@@ -1,24 +1,29 @@
-from sys import exit
+from sys import exit	# PYL-W0622
 
 
-import src.frontend
-
+import src.login
+import src.signup
+import src.shell
 
 def main():
 	print("\nPost Quantum Mail:\n")
 
 	while True:
 		try:
-			choice = int(input("1. Login\t2. Signup\t3.Exit : "))
+			# TF IS WRONG WITH \t4. HELP???
+			choice = int(input("1. Login\t2. Signup\t3. Exit: "))
 		except ValueError:
 			continue
 
-		if choice > 3 or choice < 1:
+		if choice > 4 or choice < 1:
 			continue
 		if choice == 1:
-			src.frontend.login()
+			src.login.login()
 		elif choice == 2:
-			src.frontend.signup()
-		else:
+			src.signup.signup()
+		elif choice == 3:
 			print("\nExiting...\n")
 			exit()
+		else:
+			src.shell.help()
+			continue
