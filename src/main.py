@@ -1,4 +1,4 @@
-from sys import exit
+from sys import exit	# PYL-W0622
 
 
 import src.frontend
