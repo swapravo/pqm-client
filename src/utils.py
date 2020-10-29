@@ -1,7 +1,7 @@
 from subprocess import Popen, PIPE
 from os import urandom, listdir
 from time import time
-from sh import mkdir, mount, shred, umount, rm, touch
+from sh import mkdir, mount, shred, umount, rm
 from msgpack import packb, unpackb
 from sh.contrib import sudo
 from re import search as contains
