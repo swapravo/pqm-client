@@ -1,3 +1,6 @@
+[![BCH compliance](https://bettercodehub.com/edge/badge/swapravo/pqm-client?branch=master&token=4de897e2692de0da7e26e9520a915c76f58ebccd)](https://bettercodehub.com/)
+
+
 # Post Quantum Mail
 
 ## [PostQuantumMail](https://www.postquantummail.com) aims to revolutionise the way we mail.
