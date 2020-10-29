@@ -1,5 +1,6 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/swapravo/pqm-client?branch=master&token=4de897e2692de0da7e26e9520a915c76f58ebccd)](https://bettercodehub.com/)
-
+[![CodeScene Code Health](https://codescene.io/projects/10174/status-badges/code-health)](https://codescene.io/projects/10174)
+[![CodeScene System Mastery](https://codescene.io/projects/10174/status-badges/system-mastery)](https://codescene.io/projects/10174)
 
 # Post Quantum Mail
 
