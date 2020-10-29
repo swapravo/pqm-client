@@ -1,17 +1,18 @@
-from socket import socket, AF_INET, SOCK_STREAM, SHUT_RDWR
-from sys import byteorder
+from socket import socket, AF_INET, SOCK_STREAM, SHUT_RDWR, SOL_SOCKET, SO_REUSEADDR
 
 
 import src.globals
 
 
 def close():
+	print("Closing connection")
 	connection.shutdown(SHUT_RDWR)
 	connection.close()
 
 
 def connect():
 	connection = socket(AF_INET, SOCK_STREAM)
+	connection.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 	try:
 		connection.connect((src.globals.SERVER_IP, src.globals.SERVER_PORT))
 		return connection
@@ -32,7 +33,6 @@ def recieve(max_payload_size):
 
 	data = bytearray(payload_size)
 	pos = 0
-	print("payload_size", payload_size)
 	total_recieved = 0
 	buffer_size = 4096
 
@@ -53,10 +53,10 @@ def recieve(max_payload_size):
 def send(data):
 	try:
 		connection.send(data)
+		return 0
 	except:
-		print("Network ERROR!")
+		print("Network Error")
 		return 1
-		# press xxx to retry
 
 
 connection = connect()
