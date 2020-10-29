@@ -1,4 +1,3 @@
-from os.path import isfile
 from hmac import compare_digest # IMPLEMENT THIS !!!
 from pathlib import Path
 
