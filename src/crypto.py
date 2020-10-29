@@ -1,5 +1,4 @@
 from os import urandom
-from os.path import isfile
 from sys import byteorder
 from hashlib import blake2b
 from nacl.pwhash.argon2id import kdf
@@ -25,6 +24,11 @@ def signature_key(username):
 
 def hash(message):
 	return blake2b(message, digest_size=src.globals.HASH_SIZE).digest()
+
+
+def key_missing(keyname):
+	print("REMOVE THIS!")
+	return 0
 
 
 def insert_public_key(key, keyname):
@@ -184,7 +188,7 @@ def symmetric_key_generator():
 
 def symmetrically_encrypt(message, key):
 	box = SecretBox(key)
-	return box.encrypt(message, nacl_nonce(SecretBox.NONCE_SIZE))
+	return box.encrypt(message, nacl_random(SecretBox.NONCE_SIZE))
 
 
 def symmetrically_decrypt(message, key):
