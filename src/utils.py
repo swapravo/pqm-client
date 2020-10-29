@@ -55,11 +55,11 @@ def execute(command, data=None):
 
 	process.terminate()
 	out = err = 0
-	if returned_data[0] == b'' or returned_data[0] == None:
+	if returned_data[0] == b'' or returned_data[0] is None:
 		out = 0
 	else:
 		out = returned_data[0]
-	if returned_data[1] == b'' or returned_data[1] == None:
+	if returned_data[1] == b'' or returned_data[1] is None:
 		err = 0
 	else:
 		err = returned_data[1]
@@ -85,6 +85,8 @@ def unmount_ramdisk():
 
 def username_vailidity_checker(username):
 
+	# USE THE STANDARD
+
 	# check for curse words, commands, illegal symbols
 	if len(username) < 3 or len(username) > 128:
 		print("Username must be atleast four and less than 129 charcters.")
@@ -108,16 +110,16 @@ def password_strength_checker(password):
 	if len(password) < 20:
 		print("Not enough Entropy. Password needs to be longer!")
 		return 1
-	if contains("[a-z]", password) == None:
+	if contains("[a-z]", password) is None:
 		print("Small letters needed!")
 		return 1
-	if contains("[A-Z]", password) == None:
+	if contains("[A-Z]", password) is None:
 		print("Capital letters needed!")
 		return 1
-	if contains("[0-9]", password) == None:
+	if contains("[0-9]", password) is None:
 		print("Numbers needed!")
 		return 1
-	if contains("[" + printable[62:-5] + "]", password) == None:
+	if contains("[" + printable[62:-5] + "]", password) is None:
 		print("Special characters needed!")
 		return 1
 	print("Your password's entropy: about", len(password) * 6.5, "bits.")
