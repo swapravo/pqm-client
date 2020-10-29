@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE
 from os import urandom, listdir
+from os.path import isfile
 from time import time
 from sh import mkdir, mount, shred, umount, rm
 from msgpack import packb, unpackb
@@ -67,20 +68,20 @@ def execute(command, data=None):
 
 
 def mount_ramdisk(size=1):	# a	cquire file locks!!!
-	mkdir('-p', user_home+ccr_folder)
+	mkdir('-p', src.globals.USER_HOME+src.globals.CCR_FOLDER)
 	print("Mounting temporary filesystem. Need sudo access: ")
 	with sudo:
-		mount("-t", "tmpfs", "-o", "size=" + str(size) + "M", "tmpfs", user_home+ccr_folder)
+		mount("-t", "tmpfs", "-o", "size=" + str(size) + "M", "tmpfs", src.globals.USER_HOME+src.globals.CCR_FOLDER)
 
 
 def unmount_ramdisk():
-	for _file in listdir(user_home+ccr_folder):
-		if isfile(user_home+ccr_folder+_file):
-			shred("-vfzu", user_home+ccr_folder+_file)
+	for _file in listdir(src.globals.USER_HOME+src.utils.CCR_FOLDER):
+		if isfile(src.globals.USER_HOME+src.globals.CCR_FOLDER):
+			shred("-vfzu", src.globals.USER_HOME+src.globals.CCR_FOLDER)
 	print("Unmounting temporary filesystem. Require sudo access:")
 	with sudo:
-		umount("-dvfl", user_home+ccr_folder)
-	rm("-rfv", user_home+ccr_folder)
+		umount("-dvfl", src.globals.USER_HOME+src.globals.CCR_FOLDER)
+	rm("-rfv", src.globals.USER_HOME+src.globals.CCR_FOLDER)
 
 
 def username_vailidity_checker(username):
