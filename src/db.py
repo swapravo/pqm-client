@@ -15,16 +15,16 @@ def backup_keys():
 
 
     fo = open(src.globals.USER_HOME+src.globals.CCR_FOLDER+"pubkeys", 'rb')
-    pubkeys = src.crypto.symmetrically_encrypt(fo.read(), key)
+    pubkeys = src.crypto.symmetrically_encrypt(fo.read(), src.globals.KEY)
     fo.close()
     fo = open(src.globals.USER_HOME+src.globals.CCR_FOLDER+"pubkeys~", 'rb')
-    pubkeys_ = src.crypto.symmetrically_encrypt(fo.read(), key)
+    pubkeys_ = src.crypto.symmetrically_encrypt(fo.read(), src.globals.KEY)
     fo.close()
     fo = open(src.globals.USER_HOME+src.globals.CCR_FOLDER+"secrets", 'rb')
-    secrets = src.crypto.symmetrically_encrypt(fo.read(), key)
+    secrets = src.crypto.symmetrically_encrypt(fo.read(), src.globals.KEY)
     fo.close()
     fo = open(src.globals.USER_HOME+src.globals.CCR_FOLDER+"secrets~", 'rb')
-    secrets_ = src.crypto.symmetrically_encrypt(fo.read(), key)
+    secrets_ = src.crypto.symmetrically_encrypt(fo.read(), src.globals.KEY)
     fo.close()
 
 
@@ -83,7 +83,6 @@ def add_user(username, password):
 
 def authenticate_user(username, password):
     password = bytes(password, 'utf-8')
-    print(username, password)
 
     db_connection = connect("./src/db")
     db_cursor = db_connection.cursor()
@@ -98,8 +97,10 @@ def authenticate_user(username, password):
     key = src.crypto.kdf(src.globals.HASH_SIZE, password, salt)
 
     if src.crypto.symmetrically_decrypt(challenge, key) == solution:
+        print("User authenticated!")
         src.globals.KEY = key
         return 0
+    print("User authentication FAILED!")
     return 1
 
 
@@ -112,3 +113,15 @@ def fetch_server_keys():
     db_cursor.execute(query)
     data = db_cursor.fetchone()
     return data[1:]
+
+"""
+def fetch_mails(from, n):
+
+    db_connection = connect("./src/db")
+    db_cursor = db_connection.cursor()
+
+    while True:
+        query = SELECT * FROM ? ORDER BY ID DESC LIMIT ?
+        db_cursor.execute(query, (src.globals.USERNAME, n,))
+    return
+"""
