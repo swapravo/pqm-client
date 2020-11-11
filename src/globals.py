@@ -6,6 +6,8 @@ def code(n):
 	return (n).to_bytes(2, byteorder='little')
 
 
+VERBOSE = True
+
 SIGNATURE_DENOTER = b'\x00' #10101010
 
 HASH_DENOTER = b'\xff'     #01010101
@@ -30,7 +32,7 @@ CCR_FOLDER = ".ccr/"
 
 USER_HOME = str(Path.home())+'/'
 
-VERSION = b'\x00\x00'
+VERSION = "0.1"
 
 RANDOM_NAME_LENGTH = 16 # characters in hex
 
@@ -59,7 +61,7 @@ ROLLING_AUTHENTICATION_TOKEN_SIZE = 32
 
 MAX_ADDRESS_LIST_SIZE = 100
 
-SMALL_RESPONSE = 1024 ** 1 * 16 # ONE SIZE FITS ALL?
+SMALL_RESPONSE = 1024 ** 1 * 32 # ONE SIZE FITS ALL?
 BIG_RESPONSE = 1024 ** 2 * 4
 
 # MAXIMUM SIZE OF A MAIL: 4MBs
