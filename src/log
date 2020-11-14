@@ -1,0 +1,19 @@
+Client Log
+
+Status:
+    Has basic control over codecrypt -> check out src.crypto
+    Can send username availability checks
+    Can send signup requests
+    Encrypts and stores each user's keyring to a different sqlite3 db
+    Authenticates a user's credentials
+
+TODO:
+    Make a requirements.txt
+    Remove shell=True from src.utils.execute
+    Insert a input sanitiser in src.utils.execute
+    Find a better way to return error codes:
+        Currently, functions return integer error codes
+        or the data if they are supposed to
+    Handle connection failures robustly
+    WSGI integration
+    Stop emulatating email
