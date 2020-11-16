@@ -8,9 +8,9 @@ def code(n):
 
 VERBOSE = True
 
-SIGNATURE_DENOTER = b'\x00' #10101010
+SIGN = "sign"
 
-HASH_DENOTER = b'\xff'     #01010101
+HASH = "hash"
 
 LOGGGED_IN = False
 
