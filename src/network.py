@@ -1,6 +1,5 @@
 from socket import socket, AF_INET, SOCK_STREAM, SHUT_RDWR, SOL_SOCKET, SO_REUSEADDR
 
-
 import src.globals
 
 
@@ -25,10 +24,14 @@ def recieve(max_payload_size):
 
 	if max_payload_size == 0:
 		return b''
-
 	payload_size = int.from_bytes(connection.recv(4), byteorder='little')
-	if payload_size > max_payload_size:
-		close()
+
+	if payload_size == 0:
+		print("Dropping Undersized request!")
+		return b''
+	elif payload_size > max_payload_size:
+		print("Dropping Oversized request!", payload_size, max_payload_size)
+		close(connection)
 		return b''
 
 	data = bytearray(payload_size)
@@ -37,8 +40,6 @@ def recieve(max_payload_size):
 	buffer_size = 4096
 
 	while pos < payload_size:
-		# insert try catch here in case it looses connectivity
-		# insert a timeout here
 		chunk = connection.recv(buffer_size)
 		chunk_size = len(chunk)
 		total_recieved += chunk_size
