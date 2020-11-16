@@ -9,11 +9,14 @@ Status:
 
 TODO:
     Make a requirements.txt
+    Should we send timestamps as integers or bytes?
     Remove shell=True from src.utils.execute
     Insert a input sanitiser in src.utils.execute
     Find a better way to return error codes:
         Currently, functions return integer error codes
         or the data if they are supposed to
+    Mount / Unmount ramdisks securely + secure memory integration
     Handle connection failures robustly
     WSGI integration
+    create a logger
     Stop emulatating email
