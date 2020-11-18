@@ -9,6 +9,7 @@ Status:
 
 TODO:
     Make a requirements.txt
+    Replace == with the side channel safe version of the same
     Should we send timestamps as integers or bytes?
     Remove shell=True from src.utils.execute
     Insert a input sanitiser in src.utils.execute
