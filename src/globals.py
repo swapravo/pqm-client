@@ -30,6 +30,8 @@ SERVER_PORT = 9000
 
 CCR_FOLDER = ".ccr/"
 
+TEMP_FOLDER = src.utils.mount_temp_directory()
+
 USER_HOME = str(Path.home())+'/'
 
 VERSION = "0.1"
@@ -71,6 +73,7 @@ MAX_RECIPIENTS = 100
 
 SESSION_ID = None
 
+MAX_KEYS_DOWNLOADABLE_AT_ONCE = 100
 
 # REQUEST/RESPONSE CODES
 
