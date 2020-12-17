@@ -1,3 +1,5 @@
+import src.globals
+
 def help():
 
     """
@@ -9,7 +11,7 @@ def help():
     M  A  I  L  B  O  X
 
     Your Mailbox has been divided into directories "/dir" for easy management.
-    You can traverse directories with cd.
+    You can traverse directories with cd. You can create new directories too.
 
     inbox   -> /inbox
     sent    -> /sent
@@ -22,6 +24,11 @@ def help():
 
     Commands:
 
+
+    connect             : Connect to the server when this app starts (ON by default)
+    disconnect          : Disconnect from the server / Stop trying to reconnect
+                            to the server
+
     ls                  : list recent mails
     ls N                : list N recent mails from current /dir
     ls /dir             : list recent mails from /dir
@@ -29,10 +36,13 @@ def help():
     ls sender@address.com : list all mails sent from/to sender@address.com
                           *Default value for (recent=N) is 10.
 
-    open N              : open mail N
-    close               : Close the current mail
-    next                :
-    next N              :
+    open (OR <enter>)       : Open current mail
+    open N                  : open mail N
+    close (OR <alt> + <- )  : Close the current mail \
+                                Switch the directory view
+    next (OR ->)            : Display the next mail
+    previous (OR <-)        : Display the previous mail
+    next N (OR <space>)     : Display the next N mails as a list
 
     write                         : Start writing a mail
     writeto recipient@address.com : Start writing a mail and send it to recipient(s).
@@ -54,6 +64,7 @@ def help():
     awk                 : Awk your mails!
 
     spammer sender@spam.com : Add sender@spam to spammer's list.
+    block sender@spam.com   : Block emails from sender@spam.com
 
 
     S  E  T  T  I  N  G  S
@@ -62,11 +73,15 @@ def help():
                                       This will be done automatically when sending
                                       a mail to someone.
 
-    removekey user@postquantummail.com : Remove user `user`s public keys
+    rmkey user@postquantummail.com : Remove user `user`s public keys
 
-    displaykey user@postquantummail.com : Display an unique graphical representation
-                                          of this key.
-    displaykey all : Display all keys
+    lskey user@postquantummail.com : Displays the:
+                                            i) The Key
+                                            ii) Blake 2b Hash of the Key
+                                            iii) An unique graphical representation
+                                                    of this key.
+
+    lskey all : Display all keys in the keyring
 
     settings            : Change user preferences
 
@@ -81,8 +96,8 @@ def help():
 
 
 def edit_config():
+    pass
 
-    if not authenticate_user(src.globals.USERNAME, src.globals.PASSWORD):
-        #edit config files here
-        return
-    print("User Authentication FAILED!")
+
+def shell():
+    pass
