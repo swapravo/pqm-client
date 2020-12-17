@@ -42,6 +42,7 @@ def insert_private_key(key, keyname):
 def key_exists_in_keyring(keyname):
 	# check if Codecrypt's keyring has any
 	# key named keyname
+	# check for both the encryption key and the signature key
 	return False
 
 
@@ -171,7 +172,7 @@ def verify_signature(signature):
 
 def validate_asymmetric_response(message, nonce):
 
-	out, err = asymmetrically_decrypt(message, src.globals.SERVER)
+	out, err = src.crypto.asymmetrically_decrypt(message, src.globals.SERVER)
 	if err:
 		return (out, err)
 
