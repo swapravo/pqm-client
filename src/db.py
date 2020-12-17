@@ -221,14 +221,27 @@ def initialise_database(username):
     return (out, err)
 
 
-"""
-def fetch_mails(from, n):
+# BUG: UNTESTED
+def fetch_mail_headers():
+    out, err = None, 1
 
-    db_connection = connect("./src/db")
-    db_cursor = db_connection.cursor()
+    query = """
+        SELECT id, header
+        FROM messages
+        ORDER BY id DESC;
+        """
 
-    while True:
-        query = SELECT * FROM ? ORDER BY ID DESC LIMIT ?
-        db_cursor.execute(query, (src.globals.USERNAME, n,))
-    return
-"""
+    src.db.db_cursor.execute(query)
+    print(src.db.db_cursor.fetch())
+
+
+# BUG: UNTESTED
+def fetch_mail(email_uid):
+    out, err = None, 1
+    query = """
+        SELECT *
+        FROM messages
+        WHERE id == ?;
+        """
+    src.db.db_cursor.execute(query, (email_uid,))
+    print(src.db.db_cursor.fetch())
