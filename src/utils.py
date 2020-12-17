@@ -1,4 +1,4 @@
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 from os import urandom, listdir
 from os.path import isfile, getsize
 from time import time
@@ -9,6 +9,7 @@ from re import search as contains
 from string import printable
 from sys import byteorder
 from shlex import split, quote
+from tempfile import mkstemp, mkdtemp
 
 
 import src.globals
@@ -67,6 +68,7 @@ def execute(command, data=None):
 
 
 def mount_ramdisk(size=1):	# acquire file locks!!!
+	# use umask
 	mkdir('-p', src.globals.USER_HOME+src.globals.CCR_FOLDER)
 	print("Mounting temporary filesystem. Need sudo access: ")
 	with sudo:
@@ -128,7 +130,6 @@ def password_is_strong(password):
 
 
 def issqlite3(filename):
-
     if not isfile(filename):
         return False
     if getsize(filename) < 100:
@@ -138,3 +139,16 @@ def issqlite3(filename):
         header = fo.read(100)
 
     return header[:16] == b'SQLite format 3\x00'
+
+
+def mount_temp_directory():
+	return mkdtemp(dir=src.globals.USER_HOME+src.globals.CCR_FOLDER)
+
+
+def writer(message=None):
+	if message:
+		_ = input(message+'\nPress enter to continue...\n')
+	fo = mkstemp(dir=src.globals.TEMP_FOLDER)
+	call(['nano', fo[1]])
+	with open(fo[1]) as _fo:
+		return _fo.read()
