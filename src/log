@@ -21,3 +21,6 @@ TODO:
     WSGI integration
     create a logger
     Stop emulatating email
+    decide whether an user has to maintain the exact copy
+        of his offline db on the server (and vice-versa) or not. this will affect
+        the way we index emails
