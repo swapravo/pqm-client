@@ -39,7 +39,7 @@ def random_name_generator(length=src.globals.RANDOM_NAME_LENGTH):
 def timestamp():
 	# sync server with NTP
 	# unix timestamps are 4 bytes long
-	return round(time()).to_bytes(4, byteorder='little')
+	return round(time())
 
 
 def message_id():
