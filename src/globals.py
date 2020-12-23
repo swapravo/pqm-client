@@ -30,7 +30,7 @@ SERVER_PORT = 9000
 
 CCR_FOLDER = ".ccr/"
 
-TEMP_FOLDER = src.utils.mount_temp_directory()
+TEMP_FOLDER = None
 
 USER_HOME = str(Path.home())+'/'
 
