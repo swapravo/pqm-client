@@ -247,12 +247,7 @@ def send_mail(to, cc, bcc, subject, body, *attachments):
             "signature": None,
             "mail": None,
             "key": None},
-        "signed_addresses": src.crypto.sign(src.utils.pack({
-            "to": to,
-            "cc": cc,
-            "bcc": bcc}), src.globals.SERVER),
-        "sender": None}
-        # the server fills the sender field
+        "recipient": None}
 
     # i am assuming that i am working with a mail that just needs to be
     # encrypted and sent over to the sever
@@ -271,6 +266,7 @@ def send_mail(to, cc, bcc, subject, body, *attachments):
             envelope["signed_mail"]["signature"] = signature
             envelope["signed_mail"]["mail"] = encrypted_mail
             envelope["signed_mail"]["key"] = key
+            envelope["recipient"] = recipient
 
         src.network.process({'request_code': src.globals.SEND_MAIL, \
             'request': envelope}, src.globals.SMALL_RESPONSE)
