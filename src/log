@@ -8,6 +8,7 @@ Status:
     Authenticates a user's credentials
 
 TODO:
+    use configparser
     Make a requirements.txt
     Replace == with the side channel safe version of the same
     Should we send timestamps as integers or bytes?
