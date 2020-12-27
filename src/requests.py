@@ -95,7 +95,7 @@ def username_availability_check():
 
 		request = {
 			"timestamp": src.utils.timestamp(), \
-		 	"nonce": nonce, \
+			"nonce": nonce, \
 			"request_code": src.globals.USERNAME_AVAILABILITY_CHECK, \
 			"request": { \
 				"username": username, \
@@ -237,7 +237,7 @@ def signup():
 	print("Type quit to leave.\n")
 
 	while True:
-		username, response = username_availability_check()
+		username, response = src.requests.username_availability_check()
 		if response == src.globals.USERNAME_NOT_FOUND:
 			break
 		choice = input("Try again ? ")

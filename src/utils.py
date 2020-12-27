@@ -48,8 +48,7 @@ def message_id():
 
 
 def execute(command, data=None):
-    # SANITIZE commands here
-
+	# SANITIZE commands here
 	process = Popen([command], shell=True, stdout=PIPE, stdin=PIPE)
 	if data:
 		if type(data) != bytes:
@@ -130,11 +129,11 @@ def password_is_strong(password):
 
 
 def issqlite3(filename):
-    if not isfile(filename):
+	if not isfile(filename):
         return False
     if getsize(filename) < 100:
-		# SQLite database file header is 100 bytes
-        return False
+	# SQLite database file header is 100 bytes
+		return False
     with open(filename, 'rb') as fo:
         header = fo.read(100)
 

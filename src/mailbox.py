@@ -13,12 +13,12 @@ def process(message, response_size)
     message_id = src.utils.message_id()
     message["session_ID"] = src.globals.SESSION_ID
     message["message_id"] = message_id
-	message["timestamp"] = src.utils.timestamp()
+    message["timestamp"] = src.utils.timestamp()
     message = src.utils.pack(message)
 
     request = src.crypto.symmetrically_encrypt(message, src.globals.KEY)
     del message
-	request = src.utils.sizeof(request) + request
+    request = src.utils.sizeof(request) + request
 
     err = src.network.send(request)
     if err:
@@ -55,7 +55,7 @@ def download_public_keys(*IDs):
         return (out, err)
 
     valid_IDs, invalid_IDs = [], []
-	for ID in IDs:
+    for ID in IDs:
         if src.utils.username_is_valid(ID):
             valid_IDs.append(ID)
         else:
@@ -123,7 +123,7 @@ def refresh_mailbox():
     # if you want a certain mail, you download_mail() with the idea
     # of the emails
 
-	out, err = src.mailbox.process(
+    out, err = src.mailbox.process(
         {"request_code": src.globals.UPDATE_MAILBOX}, src.globals.BIG_RESPONSE)
 
     if err:
