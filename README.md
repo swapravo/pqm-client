@@ -4,7 +4,7 @@
 
 
 # [Post Quantum Mail](https://www.postquantummail.com)
-### Bracing for impact
+## Bracing for impact
 
 ### We are pre/alpha right now!
 ##### **It will probably crash and burn if you try to run it!**
@@ -50,7 +50,7 @@ We advise you to, and would really appreciate it, if you check out the technical
 
 ### Contributing
 
-If you find it interesting, reach us at t.me/postquantummail and we can discuss what needs your attention.
+If you find it interesting, reach us at [t.me/postquantummail](t.me/postquantummail) and we can discuss what needs your attention.
 
 ### Documentation
 
