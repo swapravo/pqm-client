@@ -8,7 +8,6 @@ import src.db
 
 
 def username_availability_check():
-
 	"""
 	request = -> This is serialised and sent over to the server	{
 
@@ -48,8 +47,6 @@ def username_availability_check():
 
 	"""
 
-	out, err = None, None
-
 	# create a keyring and insert the server's public keys
 	keys, err = src.db.fetch_server_keys()
 	if err:
@@ -61,7 +58,7 @@ def username_availability_check():
 	del keys
 
 	while True:
-
+		# THIS WILL BE INTEGRATED INTO THE SHELL
 		username = "user" #input('Username: ')
 
 		if username == 'quit':
@@ -71,7 +68,7 @@ def username_availability_check():
 			continue
 
 		if src.crypto.key_exists_in_keyring(username):
-			print("A key with that name already exists in the keyring! Try another username.")
+			print("A key with that username already exists in the keyring! Try another username.")
 			continue
 
 		if src.utils.issqlite3(username):
@@ -191,7 +188,6 @@ def username_availability_check():
 
 
 def signup():
-
 	"""
 	STRUCTURE OF THE REQUEST
 	request = -> This is serialised and sent over to the server	{
@@ -230,9 +226,7 @@ def signup():
 			}
 		}
 	"""
-
-	out, err = None, None
-
+	# THIS WILL BE INTEGRATED INTO THE SHELL
 	print("\nSignup:")
 	print("Type quit to leave.\n")
 
@@ -358,15 +352,12 @@ def signup():
 		print("Recieved invalid response from server. Please retry:")
 		return
 
-		# tell them about our pricing
 		# The computation costs to create a signing key
-		# will probably prevent bots from spamming. Do something
-		# to prevent people from creating multiple accounts
-		# without paying up :/
+		# will probably prevent bots from spamming but do look
+		# into that.
 
 
 def login():
-
 	"""
 	As a later feature, the
 	user will get to choose whether he wants to send his
@@ -465,7 +456,6 @@ def login():
 		return
 
 	request = src.globals.SIGNATURE_DENOTER + src.utils.sizeof(signature) + request
-
 	request = src.globals.VERSION + src.utils.sizeof(request) + request
 
 	del message, signature

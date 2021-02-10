@@ -7,7 +7,6 @@ import src.globals
 
 # should this process go in sc.network?
 def process(message, response_size)
-
     out, err = None, None
 
     message_id = src.utils.message_id()
@@ -48,7 +47,6 @@ def process(message, response_size)
 
 
 def download_public_keys(*IDs):
-
     out, err = None, None
 
     if not IDs:
@@ -140,7 +138,6 @@ def refresh_mailbox():
 
 
 def delete_mail(from, *uid):
-
     """
     0 -> delete from the offline database
     1 -> delete from the server
@@ -170,7 +167,6 @@ def delete_mail(from, *uid):
 
 
 def send_mail(to, cc, bcc, subject, body, *attachments):
-
     """
     cc, bcc are lists of email addresses.
     subject, body are simple utf-8 strings.
@@ -272,7 +268,6 @@ def send_mail(to, cc, bcc, subject, body, *attachments):
             'request': envelope}, src.globals.SMALL_RESPONSE)
 
 def write_mail():
-
     to = src.utils.writer().split()
     cc = src.utils.writer().split()
     bcc = src.utils.writer().split()
@@ -291,7 +286,6 @@ def print_mailbox():
 
 
 def process_mail(signed_mail):
-
     """
     emails downladed straight from the server (the envelope) need to
     be processed before they're inserted into the user's database

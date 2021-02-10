@@ -88,10 +88,7 @@ def help():
 
 
     Read the full guide at www.postquantummail.com/doc
-
     """
-
-
     print(help.__doc__)
 
 

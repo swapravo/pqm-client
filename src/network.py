@@ -21,7 +21,6 @@ def connect():
 
 
 def recieve(max_payload_size):
-
 	if max_payload_size == 0:
 		return b''
 	payload_size = int.from_bytes(connection.recv(4), byteorder='little')
