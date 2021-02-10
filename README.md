@@ -31,9 +31,6 @@
 	* Cryptographically-signed mails.
 	* Open source applications for you to tinker with.
 
-* Most people use webmail clients to login / signup. In case a compromised / malicious mail service provider takes a copy of the credentials,
-	it might prove to be long, before someone actually discovers this. PQm plans to be accesssible through the browser or the terminal using its **open source client**.
-
 * **Both** GUI and CLI interfaces!
 
 * Store more mails with the same storage capacity with us.
