@@ -11,7 +11,6 @@ db_cursor = None
 
 
 def backup_keys():
-
     """
     Encrypts the keyring and stores it in the user's database.
     """
@@ -61,7 +60,6 @@ def backup_keys():
 
 
 def add_user(username, password):
-
     """
     Create a new database for every new user.
     Make two tables: one to store the keys, and
@@ -150,7 +148,6 @@ def add_user(username, password):
 
 
 def authenticate_user(username, password):
-
     out, err = None, 1
 
     if not isinstance(password, bytes):
@@ -185,7 +182,6 @@ def authenticate_user(username, password):
 
 
 def fetch_server_keys():
-
     out, err = None, 1
 
     try:
@@ -209,7 +205,6 @@ def fetch_server_keys():
 
 
 def initialise_database(username):
-
     out, err = None, 1
 
     try:

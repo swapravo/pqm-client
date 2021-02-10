@@ -98,7 +98,6 @@ def key_is_valid(key, key_is_public=True):
 
 
 def key_fingerprint(keyname):
-
 	out, err = None, None
 
 	if keyname[-2] == 'p':
@@ -118,7 +117,6 @@ def key_fingerprint(keyname):
 
 
 def asymmetrically_encrypt(message, public_key_name):
-
 	out, err = src.utils.execute("./src/ccr -e -r " + public_key_name, message)
 
 	if not out or err:
@@ -130,7 +128,6 @@ def asymmetrically_encrypt(message, public_key_name):
 
 
 def asymmetrically_decrypt(message, private_key_name):
-
 	out, err = src.utils.execute("./src/ccr -d -r " + private_key_name, message)
 
 	if not out or err:
@@ -142,7 +139,6 @@ def asymmetrically_decrypt(message, private_key_name):
 
 
 def sign(message, recipient_name):
-
 	out, err = src.utils.execute("./src/ccr -s -r " + recipient_name, message)
 
 	if err:
@@ -171,7 +167,6 @@ def verify_signature(signature):
 
 
 def validate_asymmetric_response(message, nonce):
-
 	out, err = src.crypto.asymmetrically_decrypt(message, src.globals.SERVER)
 	if err:
 		return (out, err)
@@ -179,10 +174,8 @@ def validate_asymmetric_response(message, nonce):
 	out = src.utils.unpack(out)
 	if out is None:
 		return (None, 1)
-
 	if out["nonce"] != nonce:
 		out = None
-
 	return (out, err)
 
 
