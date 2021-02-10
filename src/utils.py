@@ -11,7 +11,6 @@ from sys import byteorder
 from shlex import split, quote
 from tempfile import mkstemp, mkdtemp
 
-
 import src.globals
 
 
@@ -48,7 +47,10 @@ def message_id():
 
 
 def execute(command, data=None):
-	# SANITIZE commands here
+	# I AM AWARE THAT THIS IS FLAGGED AS A VULNERABILITY.
+	# Setting shell=False should fix this but that leads to
+	# command parsing problems
+	# SANITIZE COMMANDS HERE
 	process = Popen([command], shell=True, stdout=PIPE, stdin=PIPE)
 	if data:
 		if type(data) != bytes:
@@ -66,7 +68,8 @@ def execute(command, data=None):
 	return (out, err)
 
 
-def mount_ramdisk(size=1):	# acquire file locks!!!
+def mount_ramdisk(size=1):
+	# acquire file locks!!!
 	# use umask
 	mkdir('-p', src.globals.USER_HOME+src.globals.CCR_FOLDER)
 	print("Mounting temporary filesystem. Need sudo access: ")
@@ -86,7 +89,6 @@ def unmount_ramdisk():
 
 
 def username_is_vailid(username):
-
 	# check for curse words, commands, illegal symbols
 	if len(username) < 3 or len(username) > 128:
 		print("Username must be atleast four and less than 129 charcters.")
@@ -104,7 +106,6 @@ def username_is_vailid(username):
 
 
 def password_is_strong(password):
-
 	print("Bypassing password strength check!")
 	return True
 	# alteast 128 bits of entropy required => 20 characters atleast
@@ -149,3 +150,10 @@ def writer(message=None):
 	call(['nano', fo[1]])
 	with open(fo[1]) as _fo:
 		return _fo.read()
+
+
+def email_is_valid(address):
+	address = address.split('@')
+	if len(address) == 2:
+		return username_is_vailid(address[0]) and address[1] in src.globals.VALID_DOMAINS
+	return False
