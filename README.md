@@ -3,14 +3,16 @@
 [![CodeScene general](https://codescene.io/images/analyzed-by-codescene-badge.svg)](https://codescene.io/projects/10174)
 
 
-# Post Quantum Mail
+# [Post Quantum Mail] (https://www.postquantummail.com)
+## Bracing for impact
 
-## [PostQuantumMail](https://www.postquantummail.com) aims to revolutionise the way we mail.
+### We are pre/alpha right now!
+##### **It will probably crash and burn if you try to run it!**
 
-### Core ideas and Features:
+### [Core ideas and Features] (https://postquantummail.com/features.html):
 
 * End-to-End encrypted mails (**including** subjects and attachments)
-  * With quantum-safe encryption algorithms and signature schemes.
+  * With quantum-safe encryption algorithms[*] (https://postquantummail.com/security.html) and signature schemes.
   * All we can ever see	is the sender's and reciepient's address.
 
 * Sick of advertisements? We are too. So, no advertisements for you!
@@ -24,7 +26,7 @@
 
 * Your keys are generated on your device and the secret keys **never** leave it.
 
-* Verifiable trust policy: Just because you use our services does **not** mean you have to trust us.
+* Verifiable trust policy: Just because you use our services does **not** mean you have to trust *us*.
 	* Cryptographically-signed mails.
 	* Open source applications for you to tinker with.
 
@@ -33,8 +35,9 @@
 
 * **Both** GUI and CLI interfaces!
 
-* Store 1.4x more mails with the same storage capacity with us.[*](http://www.postquantummail.com/faq/#1.4). 
-Your mails do not become 1.4x their original size, as is the case with others.
+* Store more mails with the same storage capacity with us.
+    * Your mails are compressed before they are encrypted
+    * And yes, we know about [CRIME]. (https://en.wikipedia.org/wiki/CRIME)
 
 ### Technicals
 
@@ -42,4 +45,14 @@ We advise you to, and would really appreciate it, if you check out the technical
 
 * Currently, we use [CodeCrypt](https://github.com/exaexa/codecrypt) as the quantum-safe cryptographic backend and we plan to port it to [LibOQS](https://github.com/open-quantum-safe/liboqs) when it comes of age.
 
-* [Whitepaper](https://wwww.postquantummail.com/technical/technical-whitepaper-latest.pdf)
+* [Security Details](https://postquantummail.com/security.html)
+
+### Contributing
+
+If you find it interesting, reach us at t.me/postquantummail and we can discuss what needs your attention.
+
+### Documentation
+
+On the way ^_^;
+
+### The website is under development. So some links might be broken!
