@@ -4,7 +4,7 @@ Suite of Post Quantum Cryptographic Algorithms supported:
 
 Asymmetric Key: MCEQCMDPC256FO-CUBE512-CHACHA20
 Digital Signatures: FMTSEQ256C-CUBE512-CUBE256
-Symmetric key + Authenticated encryption: CHACHA20,XSYND,ARCFOUR,CUBE512,SHA512
+Symmetric key + Authenticated encryption: 
 
 
 CONSTANTS:
