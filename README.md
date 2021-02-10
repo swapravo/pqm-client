@@ -3,16 +3,17 @@
 [![CodeScene general](https://codescene.io/images/analyzed-by-codescene-badge.svg)](https://codescene.io/projects/10174)
 
 
-# [Post Quantum Mail] (https://www.postquantummail.com)
-## Bracing for impact
+# [Post Quantum Mail](https://www.postquantummail.com)
+### Bracing for impact
 
 ### We are pre/alpha right now!
 ##### **It will probably crash and burn if you try to run it!**
 
-### [Core ideas and Features] (https://postquantummail.com/features.html):
+
+### [Core ideas and Features](https://postquantummail.com/features.html):
 
 * End-to-End encrypted mails (**including** subjects and attachments)
-  * With quantum-safe encryption algorithms[*] (https://postquantummail.com/security.html) and signature schemes.
+  * With quantum-safe encryption algorithms[*](https://postquantummail.com/security.html) and signature schemes.
   * All we can ever see	is the sender's and reciepient's address.
 
 * Sick of advertisements? We are too. So, no advertisements for you!
@@ -37,7 +38,7 @@
 
 * Store more mails with the same storage capacity with us.
     * Your mails are compressed before they are encrypted
-    * And yes, we know about [CRIME]. (https://en.wikipedia.org/wiki/CRIME)
+    * And yes, we know about [CRIME](https://en.wikipedia.org/wiki/CRIME).
 
 ### Technicals
 
