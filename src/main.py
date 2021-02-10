@@ -1,4 +1,5 @@
-from sys import exit	# PYL-W0622
+from sys import exit
+# PYL-W0622
 
 import src.globals
 import src.requests
@@ -8,6 +9,7 @@ import src.utils
 
 src.globals.TEMP_FOLDER = src.utils.mount_temp_directory()
 
+# THIS WILL BE INTEGRATED INTO THE SHELL
 def main():
 	print("\nPost Quantum Mail:\n")
 
@@ -23,10 +25,10 @@ def main():
 			src.requests.login()
 		elif choice == 2:
 			src.requests.signup()
-			break # DEVEL FEATURE
+			break # DEV FEATURE
 		elif choice == 3:
 			src.requests.username_availability_check()
-			break # DEVEL FEATURE
+			break # DEV FEATURE
 		elif choice == 4:
 			print("\nExiting...\n")
 			exit()
