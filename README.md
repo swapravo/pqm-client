@@ -6,6 +6,13 @@
 ![](https://img.shields.io/librariesio/github/swapravo/pqm-client)
 ![](https://img.shields.io/github/repo-size/swapravo/pqm-client)
 ![](https://img.shields.io/tokei/lines/github/swapravo/pqm-client)
+![](https://img.shields.io/github/downloads/swapravo/pqm-client/total)
+![](https://img.shields.io/github/issues/swapravo/pqm-client)
+![](https://img.shields.io/github/license/swapravo/pqm-client?color=green)
+![](https://img.shields.io/github/forks/swapravo/pqm-client?style=plastic)
+![](https://img.shields.io/website?url=https%3A%2F%2Fpostquantummail.com%2Fcontribute.html)
+![](https://img.shields.io/github/commit-activity/m/swapravo/pqm-client)
+![](https://img.shields.io/github/contributors/swapravo/pqm-client)
 
 
 # [Post Quantum Mail](https://www.postquantummail.com)
