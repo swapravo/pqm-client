@@ -2,7 +2,7 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/swapravo/pqm-client?branch=master&token=4de897e2692de0da7e26e9520a915c76f58ebccd)](https://bettercodehub.com/)
 [![CodeScene general](https://codescene.io/images/analyzed-by-codescene-badge.svg)](https://codescene.io/projects/10174)
 ![](https://img.shields.io/github/languages/count/swapravo/pqm-client)
-![](https://img.shields.io/snyk/vulnerabilities/github/swapravo/pqm-client)
+[![](https://snyk.io/test/github/swapravo/pqm-client/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/swapravo/pqm-client?targetFile=requirements.txt)
 ![](https://img.shields.io/librariesio/github/swapravo/pqm-client)
 ![](https://img.shields.io/github/repo-size/swapravo/pqm-client)
 ![](https://img.shields.io/tokei/lines/github/swapravo/pqm-client)
