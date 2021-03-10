@@ -13,6 +13,7 @@
 ![](https://img.shields.io/website?url=https%3A%2F%2Fpostquantummail.com%2Fcontribute.html)
 ![](https://img.shields.io/github/commit-activity/m/swapravo/pqm-client)
 ![](https://img.shields.io/github/contributors/swapravo/pqm-client)
+[![CodeFactor](https://www.codefactor.io/repository/github/swapravo/pqm-client/badge)](https://www.codefactor.io/repository/github/swapravo/pqm-client)
 
 
 # [Post Quantum Mail](https://www.postquantummail.com)
