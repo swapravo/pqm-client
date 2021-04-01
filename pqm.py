@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sentry_sdk
+#import sentry_sdk
 import src.main
 
 """
